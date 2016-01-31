@@ -49,4 +49,7 @@ JSON.flatten = function(data) {
     return result;
 };
 
-module.exports = require('./Bot');
+module.exports = {
+    Bot:             require('./Bot'),
+    AbstractCommand: require('./Command/AbstractCommand')
+};

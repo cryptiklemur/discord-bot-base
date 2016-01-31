@@ -15,6 +15,9 @@
     "bugs":         {
         "url": "https://github.com/aequasi/discord-bot-base/issues"
     },
+    "engines":      {
+        "node": "^4.0|^5.0"
+    },
     "homepage":     "https://github.com/aequasi/discord-bot-base#readme",
     "dependencies": {
         "bluebird":         "^3.1",

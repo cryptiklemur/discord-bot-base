@@ -18,6 +18,7 @@ module.exports = (Bot) => {
                 "password": Bot.options.password
             },
             "admin_id":  Bot.options.admin_id,
+            "commands":  Bot.options.commands,
             "redis_url": undefined,
             "mongo_url": undefined
         },

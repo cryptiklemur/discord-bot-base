@@ -32,16 +32,17 @@ class Bot {
 
         resolver
             .setDefaults({
-                prefix:  '$',
-                name:    pkg.name,
-                version: pkg.version,
-                author:  pkg.author
+                name:      pkg.name,
+                version:   pkg.version,
+                author:    pkg.author,
+                container: () => { return {} }
             })
-            .setRequired(['name', 'version', 'author', 'email', 'password', 'admin_id', 'prefix', 'container'])
+            .setRequired(['name', 'version', 'author', 'email', 'password', 'admin_id', 'prefix', 'commands'])
             .setAllowedTypes('name', 'string')
             .setAllowedTypes('version', 'string')
             .setAllowedTypes('author', 'string')
             .setAllowedTypes('prefix', 'string')
+            .setAllowedTypes('commands', 'array')
             .setAllowedTypes('email', 'string')
             .setAllowedTypes('password', 'string')
             .setAllowedTypes('admin_id', 'string')

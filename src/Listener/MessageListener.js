@@ -1,6 +1,7 @@
-const MessageManager = require('../Manager/MessageManager');
-const walk           = require('walk');
-const chalk          = require('chalk');
+const MessageManager  = require('../Manager/MessageManager');
+const walk            = require('walk');
+const chalk           = require('chalk');
+const AbstractCommand = require('../Command/AbstractCommand');
 
 class MessageListener {
     constructor(container) {
@@ -34,10 +35,15 @@ class MessageListener {
             this.client.on('message', this.handleMessage.bind(this));
         })
 
-
     }
 
     register(command) {
+        if (!(command.prototype instanceof AbstractCommand)) {
+            throw new Error(
+                "Command does not extend AbstractCommand. Read the documentation please. ("+command.constructor.name+")"
+            );
+        }
+
         this.commands.push(command);
     }
 
