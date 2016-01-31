@@ -3,7 +3,7 @@ const Redis   = require('redis');
 
 class RedisBrain {
     constructor(url) {
-        if (url === undefined) {
+        if (url === '') {
             return;
         }
 

@@ -1,13 +1,13 @@
 const winston = require('winston');
 
-module.exports = function(env) {
+module.exports = function(debug) {
     var logger = new (winston.Logger)({
         transports: [
             new (winston.transports.Console)({
                 prettyPrint:      true,
                 colorize:         true,
                 silent:           false,
-                timestamp:        env === 'dev',
+                timestamp:        debug,
                 handleExceptions: true
             })
         ]

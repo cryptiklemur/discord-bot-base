@@ -21,12 +21,12 @@ module.exports = (Bot) => {
             },
             "admin_id":  Bot.options.admin_id,
             "commands":  Bot.options.commands,
-            "redis_url": undefined,
-            "mongo_url": undefined
+            "redis_url": '',
+            "mongo_url": ''
         },
         "services":   {
             "dispatcher":       {"module": EventEmitter},
-            "logger":           {"module": Logger, "args": ['%env%']},
+            "logger":           {"module": Logger, "args": ['%debug%']},
             "client":           {"module": Discord.Client},
             "helper.throttle":  {"module": ThrottleHelper},
             "brain.redis":      {"module": RedisBrain, "args": ['%redis_url%']},

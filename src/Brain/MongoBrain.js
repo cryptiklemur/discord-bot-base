@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 module.exports = function(url) {
-    if (url === undefined) {
+    if (url === '') {
         return;
     }
 
