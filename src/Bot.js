@@ -37,12 +37,14 @@ class Bot {
                 author:    pkg.author,
                 container: () => { return {} }
             })
+            .setDefined(['status'])
             .setRequired(['name', 'version', 'author', 'email', 'password', 'admin_id', 'prefix', 'commands'])
             .setAllowedTypes('name', 'string')
             .setAllowedTypes('version', 'string')
             .setAllowedTypes('author', 'string')
             .setAllowedTypes('prefix', 'string')
             .setAllowedTypes('commands', 'array')
+            .setAllowedTypes('status', 'string')
             .setAllowedTypes('email', 'string')
             .setAllowedTypes('password', 'string')
             .setAllowedTypes('admin_id', 'string')

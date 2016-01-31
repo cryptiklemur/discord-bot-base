@@ -44,6 +44,7 @@ Below is a list of options you can pass:
 * `name` - Name of the bot. This is just for the output on the CLI. Not necessary, and will default to `discord-base-bot`
 * `version` - Version of the bot. This is also just for the output on the CLI. Not necessary, and will default to the current version of `discord-base-bot`
 * `author` - Author of the bot. This is again, just for the output on the CLI. Not necessary, and will default to the author of `discord-base-bot`
+* `status` - Status of the bot. Will show up in the user list as "Playing <status>"
 * `email` - Login for the bot. This is required.
 * `password` - Password for the bot. This is required.
 * `prefix` - Prefix the bot will use for commands. This is required. Try not to use common characters if you plan to be on big servers.
