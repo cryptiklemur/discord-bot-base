@@ -6,7 +6,7 @@ const AbstractCommand = require('../Command/AbstractCommand');
 class MessageListener {
     constructor(container) {
         this.container = container;
-        this.register = register.bind(this);
+        this.register = this.register.bind(this);
 
         this.commands = [];
     }
