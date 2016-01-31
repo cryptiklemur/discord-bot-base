@@ -100,7 +100,11 @@ class Bot {
     }
 
     isEnv(environment) {
-        return environment === this.env;
+        return this.environment === this.env;
+    }
+
+    isDebug() {
+        return this.debug;
     }
 }
 

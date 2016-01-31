@@ -31,7 +31,7 @@ class MessageListener {
         });
 
         walker.on('end', () => {
-            console.log(chalk.grey.dim("Added " + this.commands.length + " commands"));
+            this.container.get('logger').debug("Added " + this.commands.length + " commands");
             this.client.on('message', this.handleMessage.bind(this));
         })
 

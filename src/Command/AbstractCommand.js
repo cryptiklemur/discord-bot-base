@@ -12,6 +12,7 @@ class AbstractCommand {
         this.container = container;
         this.message   = message;
 
+        this.logger = container.get('logger');
         this.throttle = container.get('helper.throttle');
         this.client   = container.get('client');
     }
@@ -43,7 +44,7 @@ class AbstractCommand {
     getMatches(content, regex, callback, noPrint) {
         let matches = regex.exec(content);
 
-        //console.log(chalk.grey("Matching content against " + regex.toString(), content, matches));
+        this.logger.debug("Matching content against " + regex.toString(), content, matches !== null);
         if (matches === null) {
             return false;
         }
@@ -53,7 +54,8 @@ class AbstractCommand {
         if (!noPrint && result !== false) {
             let array   = this.message.toArray();
             array.regex = regex.toString();
-            console.log("\n" + prettyjson.render({"Command Executed": array}) + "\n");
+
+            this.logger.log('info', "Command Executed", array);
         }
     }
 

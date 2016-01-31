@@ -11,7 +11,9 @@ const MessageManager  = require('./Manager/MessageManager');
 module.exports = (Bot) => {
     return {
         "parameters": {
-            "dev":       Bot.isEnv('dev'),
+            "env":       Bot.env,
+            "dev":       Bot.env === 'dev',
+            "debug":     Bot.debug,
             "prefix":    Bot.options.prefix,
             "login":     {
                 "email":    Bot.options.email,
@@ -24,7 +26,7 @@ module.exports = (Bot) => {
         },
         "services":   {
             "dispatcher":       {"module": EventEmitter},
-            "logger":           {"module": Logger},
+            "logger":           {"module": Logger, "args": ['%env%']},
             "client":           {"module": Discord.Client},
             "helper.throttle":  {"module": ThrottleHelper},
             "brain.redis":      {"module": RedisBrain, "args": ['%redis_url%']},
