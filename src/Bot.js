@@ -19,7 +19,7 @@ class Bot {
         let container     = require('./container')(this),
             userContainer = this.options.container(this);
 
-        container = _.extend({}, container, userContainer);
+        container = _.merge({}, container, userContainer);
 
         this.container = ContainerBuilder.buildFromJson(container);
 
