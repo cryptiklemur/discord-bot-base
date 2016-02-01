@@ -15,7 +15,11 @@ class AbstractCommand {
         this.logger = container.get('logger');
         this.throttle = container.get('helper.throttle');
         this.client   = container.get('client');
+
+        this.initialize();
     }
+
+    initialize() {}
 
     isThrottled(key, length) {
         return this.throttle.isThrottled(key, this.message, length);
