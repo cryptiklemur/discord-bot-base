@@ -1,4 +1,5 @@
-class MemoryBrain extends Array {
-}
+const NodeCache = require("node-cache");
 
-module.exports = MemoryBrain;
+module.exports = function() {
+    return new NodeCache();
+};
