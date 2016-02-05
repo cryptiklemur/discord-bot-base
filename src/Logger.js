@@ -8,6 +8,7 @@ module.exports = function(debug, log_dir, name) {
                 file:      `${log_dir}/${name}.log`,
                 colorize:  false,
                 timestamp: true,
+                json:      true,
                 max:       '100m',
                 keep:      7,
                 compress:  true
