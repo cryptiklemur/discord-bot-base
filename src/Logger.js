@@ -6,9 +6,8 @@ module.exports = function(debug, log_dir, name) {
         transports: [
             new (Rotate)({
                 file:      `${log_dir}/${name}.log`,
-                colorize:  true,
+                colorize:  false,
                 timestamp: true,
-                json:      true,
                 max:       '100m',
                 keep:      7,
                 compress:  true
