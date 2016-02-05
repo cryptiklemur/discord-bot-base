@@ -23,7 +23,7 @@ class HelpCommand extends AbstractCommand {
 
             let prefix = this.message.prefix;
             if (prefix === '`') {
-                prefix = '\\`';
+                prefix = ' `\u200B';
             }
 
 
