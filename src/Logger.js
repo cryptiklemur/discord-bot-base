@@ -1,10 +1,10 @@
 const winston = require('winston');
-require('winston-logrotate');
+const Rotate  = require('winston-logrotate');
 
 module.exports = function(debug, log_dir, name) {
     var logger = new (winston.Logger)({
         transports: [
-            new (winston.transports.Rotate)({
+            new (Rotate)({
                 file:      `${log_dir}/${name}.log`,
                 colorize:  true,
                 timestamp: true,
