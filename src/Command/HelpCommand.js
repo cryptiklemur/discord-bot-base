@@ -21,9 +21,15 @@ class HelpCommand extends AbstractCommand {
                 return `\t${command.name} - ${command.description}`;
             });
 
+            let prefix = this.message.prefix;
+            if (prefix === '`') {
+                prefix = '\`';
+            }
+
+
             this.reply(
                 `Meep Morp. Hello! I am a bot :D.
-Any of these commands have to be prefix with either \`${this.message.prefix}\`, or ${this.client.user.mention()}.
+Any of these commands have to be prefix with either \`${prefix}\`, or ${this.client.user.mention()}.
 
 \`\`\`
 Commands:
