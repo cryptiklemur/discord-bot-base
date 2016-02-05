@@ -38,7 +38,17 @@ class Bot {
                 container: () => { return {} }
             })
             .setDefined(['status'])
-            .setRequired(['name', 'version', 'author', 'email', 'password', 'admin_id', 'prefix', 'commands'])
+            .setRequired([
+                'name',
+                'version',
+                'author',
+                'email',
+                'password',
+                'admin_id',
+                'prefix',
+                'commands',
+                'log_dir'
+            ])
             .setAllowedTypes('name', 'string')
             .setAllowedTypes('version', 'string')
             .setAllowedTypes('author', 'string')
@@ -48,6 +58,7 @@ class Bot {
             .setAllowedTypes('email', 'string')
             .setAllowedTypes('password', 'string')
             .setAllowedTypes('admin_id', 'string')
+            .setAllowedTypes('log_dir', 'string')
             .setAllowedTypes('container', 'function');
 
         return resolver;

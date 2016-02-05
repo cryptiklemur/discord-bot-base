@@ -16,18 +16,20 @@ module.exports = (Bot) => {
             "dev":       Bot.env === 'dev',
             "debug":     Bot.debug,
             "prefix":    Bot.options.prefix,
+            "name":      Bot.options.name,
             "login":     {
                 "email":    Bot.options.email,
                 "password": Bot.options.password
             },
             "admin_id":  Bot.options.admin_id,
             "commands":  Bot.options.commands,
+            "log_dir":   Bot.options.log_dir,
             "redis_url": '',
             "mongo_url": ''
         },
         "services":   {
             "dispatcher":       {"module": EventEmitter},
-            "logger":           {"module": Logger, "args": ['%debug%']},
+            "logger":           {"module": Logger, "args": ['%debug%', '%log_dir%', '%name%']},
             "client":           {"module": Discord.Client},
             "helper.throttle":  {"module": ThrottleHelper},
             "brain.memory":     {"module": MemoryBrain},

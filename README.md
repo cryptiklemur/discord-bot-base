@@ -29,6 +29,7 @@ new BaseBot.Bot('dev', true, {
     admin_id:  '<your user id>',
     email:     '<your bot login>',
     password:  '<your bot password>',
+    log_dir:   '<location of logs directory>',
     commands:  [TestCommand],
     prefix:    "!",
 });
