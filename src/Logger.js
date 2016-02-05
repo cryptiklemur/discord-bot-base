@@ -1,5 +1,5 @@
 const winston = require('winston');
-const Rotate  = require('winston-logrotate');
+const Rotate  = require('winston-logrotate').Rotate;
 
 module.exports = function(debug, log_dir, name) {
     var logger = new (winston.Logger)({
