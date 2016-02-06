@@ -71,8 +71,8 @@ class MessageListener {
                 command.handle();
             } catch (error) {
                 this.client.sendMessage(this.client.admin, "I have run into an issue:");
-                this.client.sendMessage(this.client.admin, error.message);
-                this.client.sendMessage(this.client.admin, error.stack);
+                this.client.sendMessage(this.client.admin, error.message, 200);
+                this.client.sendMessage(this.client.admin, error.stack, 400);
             }
         }
     }
