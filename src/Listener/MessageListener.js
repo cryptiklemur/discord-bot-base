@@ -69,7 +69,7 @@ class MessageListener {
 
             try {
                 command.handle();
-            } catch (e) {
+            } catch (error) {
                 this.client.sendMessage(this.client.admin, "I have run into an issue:");
                 this.client.sendMessage(this.client.admin, error.message);
                 this.client.sendMessage(this.client.admin, error.stack);
