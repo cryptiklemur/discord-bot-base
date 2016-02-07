@@ -6,6 +6,7 @@ const MemoryBrain     = require('./Brain/MemoryBrain');
 const RedisBrain      = require('./Brain/RedisBrain');
 const MongoBrain      = require('./Brain/MongoBrain');
 const MessageListener = require('./Listener/MessageListener');
+const IgnoreHelper    = require('./Helper/IgnoreHelper');
 const ThrottleHelper  = require('./Helper/ThrottleHelper');
 const MessageManager  = require('./Manager/MessageManager');
 
@@ -31,6 +32,7 @@ module.exports = (Bot) => {
             "dispatcher":       {"module": EventEmitter},
             "logger":           {"module": Logger, "args": ['%debug%', '%log_dir%', '%name%']},
             "client":           {"module": Discord.Client},
+            "helper.ignore":    {"module": IgnoreHelper, "args": ['%name%', {$ref: 'brain.redis'}, {$ref: 'logger'}]},
             "helper.throttle":  {"module": ThrottleHelper},
             "brain.memory":     {"module": MemoryBrain},
             "brain.redis":      {"module": RedisBrain, "args": ['%redis_url%']},

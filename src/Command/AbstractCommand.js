@@ -8,6 +8,8 @@ class AbstractCommand {
 
     static get help() { return "None"; }
 
+    static get noHelp() { return false; }
+
     constructor(container, message) {
         this.container = container;
         this.message   = message;

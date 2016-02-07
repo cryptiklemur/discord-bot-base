@@ -2,11 +2,12 @@ const MessageManager  = require('../Manager/MessageManager');
 const walk            = require('walk');
 const chalk           = require('chalk');
 const AbstractCommand = require('../Command/AbstractCommand');
+const Commands        = require('require-all')(__dirname + '/../Command');
 
 class MessageListener {
     constructor(container) {
         this.container = container;
-        this.register = this.register.bind(this);
+        this.register  = this.register.bind(this);
 
         this.commands = [];
     }
@@ -19,29 +20,22 @@ class MessageListener {
             this.container.getParameter('commands').forEach(this.register);
         }
 
-        let walker = walk.walk(__dirname + '/../Command/', {followLinks: false});
-
-        walker.on('file', (root, stat, next) => {
-            let cls = require(__dirname + '/../Command/' + stat.name);
-
-            if (stat.name !== 'AbstractCommand.js') {
-                this.register(cls);
+        for (let name in Commands) {
+            if (Commands.hasOwnProperty(name)) {
+                if (name !== 'AbstractCommand') {
+                    this.register(Commands[name]);
+                }
             }
+        }
 
-            next();
-        });
-
-        walker.on('end', () => {
-            this.container.get('logger').debug("Added " + this.commands.length + " commands");
-            this.client.on('message', this.handleMessage.bind(this));
-        })
-
+        this.container.get('logger').debug("Added " + this.commands.length + " commands");
+        this.client.on('message', this.handleMessage.bind(this));
     }
 
     register(command) {
         if (!(command.prototype instanceof AbstractCommand)) {
             throw new Error(
-                "Command does not extend AbstractCommand. Read the documentation please. ("+command.constructor.name+")"
+                "Command does not extend AbstractCommand. Read the documentation please. (" + command.constructor.name + ")"
             );
         }
 
@@ -73,6 +67,8 @@ class MessageListener {
                 this.client.sendMessage(this.client.admin, "I have run into an issue:");
                 this.client.sendMessage(this.client.admin, error.message, 200);
                 this.client.sendMessage(this.client.admin, error.stack, 400);
+
+                throw error;
             }
         }
     }

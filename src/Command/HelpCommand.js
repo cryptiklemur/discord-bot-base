@@ -17,15 +17,20 @@ class HelpCommand extends AbstractCommand {
                 return;
             }
 
-            let commands = this.commands.map((command) => {
-                return `\t${command.name} - ${command.description}`;
-            });
+            let commands = this.commands
+                .map((command) => {
+                    if (command.noHelp) {
+                        return null;
+                    }
+
+                    return `\t${command.name} - ${command.description}`;
+                })
+                .filter(line => line !== null);
 
             let prefix = this.message.prefix;
             if (prefix === '`') {
                 prefix = ' `\u200B';
             }
-
 
             this.reply(
                 `Meep Morp. Hello! I am a bot :D.
