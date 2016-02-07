@@ -40,6 +40,38 @@ class IgnoreHelper {
     reset() {
         this.saveIgnores([]);
     }
+
+    isNotIgnored(message, callback) {
+        let isIgnored = false;
+
+        console.log("Checking ignored");
+        this.getIgnores(ignored => {
+            ignored.forEach(item => {
+                if (isIgnored || !item.ignored) {
+                    return;
+                }
+
+                if (item.type === 'server' && item.id == message.server.id) {
+                    isIgnored = true;
+                }
+
+                if (item.type === 'channel') {
+                    let split = item.id.split('-');
+                    if (split[0] == message.server.id && split[1] == message.channel.id) {
+                        isIgnored = true;
+                    }
+                }
+
+                if (item.type === 'user' && item.id == message.author.id) {
+                    isIgnored = true;
+                }
+            });
+
+            if (!isIgnored) {
+                callback();
+            }
+        });
+    }
 }
 
 module.exports = IgnoreHelper;

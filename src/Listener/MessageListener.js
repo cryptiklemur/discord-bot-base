@@ -49,6 +49,14 @@ class MessageListener {
             return false;
         }
 
+        if (message.author.id === this.client.admin.id) {
+            this.checkCommands(message);
+        } else {
+            this.container.get('helper.ignore').isNotIgnored(message, this.checkCommands.bind(this, message));
+        }
+    }
+
+    checkCommands(message) {
         for (let index in this.commands) {
             if (!this.commands.hasOwnProperty(index)) {
                 continue;
@@ -64,11 +72,10 @@ class MessageListener {
             try {
                 command.handle();
             } catch (error) {
+                this.container.get('logger').error(error);
                 this.client.sendMessage(this.client.admin, "I have run into an issue:");
                 this.client.sendMessage(this.client.admin, error.message, 200);
                 this.client.sendMessage(this.client.admin, error.stack, 400);
-
-                throw error;
             }
         }
     }
