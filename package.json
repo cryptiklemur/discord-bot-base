@@ -37,7 +37,6 @@
     "redis": "^2.4",
     "require-all": "^2.0.0",
     "walk": "^2.3",
-    "winston": "^2.1",
-    "winston-logrotate": "^1.0.0"
+    "winston": "^2.1"
   }
 }
