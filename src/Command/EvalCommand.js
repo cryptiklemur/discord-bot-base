@@ -1,7 +1,6 @@
 const AbstractCommand = require('./AbstractCommand');
-const chalk           = require('chalk');
 
-class RestartCommand extends AbstractCommand {
+class EvalCommand extends AbstractCommand {
     static get name() { return 'eval'; }
 
     static get description() { return "Evaluates the given code - Requires admin"; }
@@ -23,4 +22,4 @@ class RestartCommand extends AbstractCommand {
     }
 }
 
-module.exports = RestartCommand;
+module.exports = EvalCommand;
