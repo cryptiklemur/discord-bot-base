@@ -39,7 +39,7 @@ class Bot {
                     return {}
                 }
             })
-            .setDefined(['status', 'queue', 'redis_url', 'mongo_url'])
+            .setDefined(['status', 'queue', 'redis_url', 'mongo_url', 'log_dir'])
             .setRequired([
                 'name',
                 'version',
@@ -48,8 +48,7 @@ class Bot {
                 'password',
                 'admin_id',
                 'prefix',
-                'commands',
-                'log_dir'
+                'commands'
             ])
             .setAllowedTypes('name', 'string')
             .setAllowedTypes('version', 'string')

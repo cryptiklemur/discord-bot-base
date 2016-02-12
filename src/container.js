@@ -26,7 +26,7 @@ module.exports = (Bot) => {
             },
             "admin_id":  Bot.options.admin_id,
             "commands":  Bot.options.commands,
-            "log_dir":   Bot.options.log_dir,
+            "log_dir":   Bot.options.log_dir || null,
             "redis_url": Bot.options.redis_url || "",
             "mongo_url": Bot.options.mongo_url || "",
             'queue':     Bot.options.queue || {}
