@@ -1,4 +1,3 @@
-const CircularJSON = require('circular-json');
 const Message      = require('discord.js').Message;
 const _            = require('lodash');
 
