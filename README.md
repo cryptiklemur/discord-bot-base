@@ -11,7 +11,7 @@ This module requires
 Install with NPM
 
 ```bash
-npm install --save discord-base-bot
+npm install --save discord-bot-base
 ```
 
 ## Usage
@@ -22,7 +22,7 @@ instance of [`Bot`](blob/master/src/Bot.js).
 ```javascript
 'use strict';
 
-const BaseBot = require('discord-base-bot');
+const BaseBot = require('discord-bot-base');
 const TestCommand = require('./src/Command/TestCommand')
 
 new BaseBot.Bot('dev', true, {
