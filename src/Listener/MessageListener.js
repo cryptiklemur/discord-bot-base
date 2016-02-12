@@ -12,7 +12,7 @@ class MessageListener {
         this.commands = [];
     }
 
-    listen() {
+    addCommands() {
         this.manager = this.container.get('manager.message');
         this.client  = this.container.get('client');
 
@@ -29,7 +29,6 @@ class MessageListener {
         }
 
         this.container.get('logger').debug("Added " + this.commands.length + " commands");
-        this.client.on('message', this.handleMessage.bind(this));
     }
 
     register(command) {
