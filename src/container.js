@@ -5,10 +5,12 @@ const Logger          = require('./Logger');
 const MemoryBrain     = require('./Brain/MemoryBrain');
 const RedisBrain      = require('./Brain/RedisBrain');
 const MongoBrain      = require('./Brain/MongoBrain');
+const RabbitQueue     = require('./Queue/RabbitQueue');
 const MessageListener = require('./Listener/MessageListener');
 const IgnoreHelper    = require('./Helper/IgnoreHelper');
 const ThrottleHelper  = require('./Helper/ThrottleHelper');
 const MessageManager  = require('./Manager/MessageManager');
+const MessageHandler  = require('./Handler/MessageHandler');
 
 module.exports = (Bot) => {
     return {
@@ -25,13 +27,25 @@ module.exports = (Bot) => {
             "admin_id":  Bot.options.admin_id,
             "commands":  Bot.options.commands,
             "log_dir":   Bot.options.log_dir,
-            "redis_url": '',
-            "mongo_url": ''
+            "redis_url": Bot.options.redis_url || "",
+            "mongo_url": Bot.options.mongo_url || "",
+            'queue':     Bot.options.queue || {}
         },
         "services":   {
             "dispatcher":       {"module": EventEmitter},
             "logger":           {"module": Logger, "args": ['%debug%', '%log_dir%', '%name%']},
             "client":           {"module": Discord.Client},
+            "queue.rabbit":     {"module": RabbitQueue, "args": ['%queue%']},
+            "handler.message":  {
+                "module": MessageHandler,
+                "args":   [
+                    {$ref: 'logger'},
+                    {$ref: 'client'},
+                    {$ref: 'queue.rabbit'},
+                    {$ref: 'listener.message'},
+                    '%name%'
+                ]
+            },
             "helper.ignore":    {"module": IgnoreHelper, "args": ['%name%', {$ref: 'brain.redis'}, {$ref: 'logger'}]},
             "helper.throttle":  {"module": ThrottleHelper},
             "brain.memory":     {"module": MemoryBrain},

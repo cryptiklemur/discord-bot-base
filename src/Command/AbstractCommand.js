@@ -30,6 +30,8 @@ class AbstractCommand {
     reply(content, delay) {
         delay = delay === undefined ? 0 : delay;
 
+
+
         setTimeout(() => {
             this.client.reply(this.message.message, content);
         }, 50 + delay)
