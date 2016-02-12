@@ -1,7 +1,7 @@
 const winston = require('winston');
 
 module.exports = function (debug, log_dir, name) {
-    let transports = [
+    var transports = [
         new (winston.transports.Console)({
             prettyPrint:      true,
             colorize:         true,
