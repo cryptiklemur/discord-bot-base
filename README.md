@@ -52,6 +52,11 @@ Below is a list of options you can pass:
 * `admin_id` - User ID of the account you want to have access to admin commands. (e.g. the restart command)
 * `container` - Advanced. For now, if you need to add this, message me in the discord api server. Required to use mysql/mongo/redis stuff.
 * `commands` - An array of commands. The array should contain modules of commands. Check out an example below of a command.
+* `mongo_url` - a Fully qualified mongo dsn. e.g. `mongodb://localhost/`
+* `redis_url` - a Fully qualified redis dsn. e.g. `redis://localhost/`
+* `queue` - An object of config variables for [rabbitmq](https://github.com/postwait/node-amqp#connection-options-and-url)
+
+If you specify queue, you will be able to set up your bot with cluster support, with PM2.
 
 ### Command Example
 
