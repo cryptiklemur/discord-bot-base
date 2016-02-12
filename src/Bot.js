@@ -35,9 +35,11 @@ class Bot {
                 name:      pkg.name,
                 version:   pkg.version,
                 author:    pkg.author,
-                container: () => { return {} }
+                container: () => {
+                    return {}
+                }
             })
-            .setDefined(['status'])
+            .setDefined(['status', 'queue', 'redis_url', 'mongo_url'])
             .setRequired([
                 'name',
                 'version',
@@ -59,6 +61,9 @@ class Bot {
             .setAllowedTypes('password', 'string')
             .setAllowedTypes('admin_id', 'string')
             .setAllowedTypes('log_dir', 'string')
+            .setAllowedTypes('queue', 'object')
+            .setAllowedTypes('redis_url', 'string')
+            .setAllowedTypes('mongo_url', 'string')
             .setAllowedTypes('container', 'function');
 
         return resolver;
@@ -97,15 +102,22 @@ class Bot {
 
     onReady() {
         this.logger.log(chalk.green("Bot is connected, waiting for messages"));
+        this.client.admin = this.client.users.get('id', this.container.getParameter('admin_id'));
 
         if (this.options.status !== undefined) {
             this.client.setStatus('online', this.options.status);
         }
 
-        this.container.get('listener.message').listen();
+        this.container.get('listener.message').addCommands();
 
-        this.client.admin = this.client.users.get('id', this.container.getParameter('admin_id'));
-        this.client.sendMessage(this.client.admin, "Bot is connected, waiting for messages");
+        this.container.get('handler.message').run(() => {
+            this.client.sendMessage(this.client.admin, "Bot is connected, waiting for messages");
+
+            if (typeof process.send === 'function') {
+                this.logger.debug("Sending online message");
+                process.send('online');
+            }
+        });
     }
 
     onDisconnect() {
