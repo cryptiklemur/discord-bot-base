@@ -44,7 +44,6 @@ class IgnoreHelper {
     isNotIgnored(message, callback) {
         let isIgnored = false;
 
-        console.log("Checking ignored");
         this.getIgnores(ignored => {
             ignored.forEach(item => {
                 if (isIgnored || !item.ignored) {
