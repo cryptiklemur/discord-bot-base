@@ -34,8 +34,8 @@ class AbstractCommand {
         setTimeout(() => {
             let method = mention ? 'reply' : 'sendMessage';
 
-            this.client[method](this.message.message, content, (message) => {
-                if (deleteDelay !== null && deleteDelay !== undefined) {
+            this.client[method](this.message.message, content, (error, message) => {
+                if (!error && deleteDelay !== null && deleteDelay !== undefined) {
                     setTimeout(() => this.client.deleteMessage(message), deleteDelay);
                 }
             });
@@ -46,8 +46,8 @@ class AbstractCommand {
         delay = delay === undefined ? 0 : delay;
 
         setTimeout(() => {
-            this.client.sendMessage(location, message, (message) => {
-                if (deleteDelay !== null && deleteDelay !== undefined) {
+            this.client.sendMessage(location, message, (error, message) => {
+                if (!error && deleteDelay !== null && deleteDelay !== undefined) {
                     setTimeout(() => this.client.deleteMessage(message), deleteDelay);
                 }
             });
