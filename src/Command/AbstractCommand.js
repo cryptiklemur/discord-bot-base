@@ -27,21 +27,30 @@ class AbstractCommand {
         return this.throttle.isThrottled(key, this.message, length);
     }
 
-    reply(content, delay) {
+    reply(content, delay, deleteDelay, mention) {
         delay = delay === undefined ? 0 : delay;
-
-
+        mention = mention === undefined ? false : mention;
 
         setTimeout(() => {
-            this.client.reply(this.message.message, content);
+            let method = mention ? 'reply' : 'sendMessage';
+
+            this.client[method](this.message.message, content, (message) => {
+                if (deleteDelay !== null && deleteDelay !== undefined) {
+                    setTimeout(() => this.client.deleteMessage(message), deleteDelay);
+                }
+            });
         }, 50 + delay)
     }
 
-    sendMessage(location, message, delay) {
+    sendMessage(location, message, delay, deleteDelay) {
         delay = delay === undefined ? 0 : delay;
 
         setTimeout(() => {
-            this.client.sendMessage(location, message);
+            this.client.sendMessage(location, message, (message) => {
+                if (deleteDelay !== null && deleteDelay !== undefined) {
+                    setTimeout(() => this.client.deleteMessage(message), deleteDelay);
+                }
+            });
         }, 50 + delay)
     }
 
