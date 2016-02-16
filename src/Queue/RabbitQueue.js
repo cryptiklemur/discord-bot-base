@@ -1,7 +1,7 @@
 const amqp = require('amqp');
 
 module.exports = function (config) {
-    if (Object.keys(config).length) {
+    if (Object.keys(config).length === 0) {
         return null;
     }
 

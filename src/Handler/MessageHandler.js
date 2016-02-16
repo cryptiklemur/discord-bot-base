@@ -13,7 +13,7 @@ class MessageHandler {
     }
 
     run(callback) {
-        if (!this.queue || process.env.NODE_APP_INSTANCE === undefined) {
+        if (Object.keys(this.queue).length === 0 || process.env.NODE_APP_INSTANCE === undefined) {
             this.logger.debug('Starting basic message handler');
             this.client.on('message', this.listener.handleMessage.bind(this.listener));
 
