@@ -100,22 +100,27 @@ class Bot {
     }
 
     onReady() {
-        this.logger.log(chalk.green("Bot is connected, waiting for messages"));
-        this.client.admin = this.client.users.get('id', this.container.getParameter('admin_id'));
+        this.logger.log(chalk.green("Bot is connected, force fetching users"));
 
-        if (this.options.status !== undefined) {
-            this.client.setStatus('online', this.options.status);
-        }
+        this.client.forceFetchUsers(() => {
+            this.logger.log(chalk.green("Bot is loaded, waiting for messages"));
 
-        this.container.get('listener.message').addCommands();
+            this.client.admin = this.client.users.get('id', this.container.getParameter('admin_id'));
 
-        this.container.get('handler.message').run(() => {
-            this.client.sendMessage(this.client.admin, "Bot is connected, waiting for messages");
-
-            if (typeof process.send === 'function') {
-                this.logger.debug("Sending online message");
-                process.send('online');
+            if (this.options.status !== undefined) {
+                this.client.setStatus('online', this.options.status);
             }
+
+            this.container.get('listener.message').addCommands();
+
+            this.container.get('handler.message').run(() => {
+                this.client.sendMessage(this.client.admin, "Bot is connected, waiting for messages");
+
+                if (typeof process.send === 'function') {
+                    this.logger.debug("Sending online message");
+                    process.send('online');
+                }
+            });
         });
     }
 
