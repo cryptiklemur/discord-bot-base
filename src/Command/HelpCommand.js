@@ -12,11 +12,7 @@ class HelpCommand extends AbstractCommand {
     }
 
     handle() {
-        this.responds(/^(help)?$/g, () => {
-            if (this.message.message.attachments.length !== 0) {
-                return;
-            }
-
+        this.responds(/^help$/g, () => {
             let commands = this.commands
                 .map((command) => {
                     if (command.noHelp) {
