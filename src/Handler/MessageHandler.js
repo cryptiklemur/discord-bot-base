@@ -14,26 +14,26 @@ class MessageHandler {
 
     run(callback) {
         if (Object.keys(this.queue).length === 0 || process.env.NODE_APP_INSTANCE === undefined) {
-            this.logger.info('Starting basic message handler.');
+            this.logger.info('Message Handler: Starting basic message handler.');
             this.client.on('message', this.listener.handleMessage.bind(this.listener));
 
             return callback();
         }
 
         this.queue.on('error', error => {
-            this.logger.error('Failed to initialize queue connection', error);
+            this.logger.error('Message Handler: Failed to initialize queue connection', error);
             process.exit(1);
         });
 
         this.queue.connect();
-        this.logger.info("Using Rabbit for messages. Waiting for queue connection.");
+        this.logger.info("Message Handler: Using Rabbit for messages. Waiting for queue connection.");
 
         this.queue.on('ready', () => {
-            this.logger.info("Queue connection ready. Creating subscriber");
+            this.logger.info("Message Handler: Queue connection ready. Creating subscriber");
             this.createSubscriber(callback);
 
             if (process.env.NODE_APP_INSTANCE <= 1) {
-                this.logger.info("First node in cluster, creating publisher");
+                this.logger.info("Message Handler: First node in cluster, creating publisher");
                 this.client.on('message', message => {
                     this.logger.debug("Message received");
                     let messageId = this.messages.push(message) - 1;
@@ -47,9 +47,8 @@ class MessageHandler {
     }
 
     createSubscriber(callback) {
-        this.logger.info(this.queue.queue, this.name);
         this.queue.queue(this.name, (q) => {
-            this.logger.debug(`Queue **${this.name}** is open`);
+            this.logger.debug(`Message Handler: Queue **${this.name}** is open`);
             // Catch all messages
             q.bind('#');
 
@@ -62,8 +61,8 @@ class MessageHandler {
                 this.listener.handleMessage(message);
             });
 
-            this.logger.info("Subscriber created.");
-            callback();
+            this.logger.info("Message Handler: Subscriber created. Running callback");
+            return callback();
         });
     }
 }

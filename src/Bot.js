@@ -109,6 +109,7 @@ class Bot {
         this.container.get('listener.message').addCommands();
 
         this.container.get('handler.message').run(() => {
+            this.logger.info("Bot is connected, waiting for messages");
             this.client.sendMessage(this.client.admin, "Bot is connected, waiting for messages");
 
             if (typeof process.send === 'function') {
@@ -116,9 +117,6 @@ class Bot {
                 process.send('online');
             }
         });
-
-        let server = this.client.servers.get('name', '#LFG Bot Server'),
-            channel = server.channels.get('name', 'general');
     }
 
     onDisconnect() {
