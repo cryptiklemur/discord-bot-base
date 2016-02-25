@@ -75,8 +75,8 @@ class IgnoreCommand extends AbstractCommand {
             this.helper.toggleIgnore(
                 'server',
                 id,
-                (ignored) => {
-                    let ign = this.helper.getIgnores(ignores => {
+                () => {
+                    this.helper.getIgnores(ignores => {
                         let ignored = ignores.find(item => item.type === 'server' && item.id === id).ignored;
                         this.reply(`Server has been ${ignored ? 'ignored' : 'unignored'}: \`${server.name}\``);
                     });
@@ -91,8 +91,8 @@ class IgnoreCommand extends AbstractCommand {
             this.helper.toggleIgnore(
                 'channel',
                 this.message.server.id + '-' + id,
-                (ignored) => {
-                    let ign = this.helper.getIgnores(ignores => {
+                () => {
+                    this.helper.getIgnores(ignores => {
                         let ignored = ignores.find(item => item.type === 'channel' && item.id === id).ignored;
                         this.reply(`Channel has been ${ignored ? 'ignored' : 'unignored'}: \`${channel.name}\``);
                     });
@@ -107,10 +107,10 @@ class IgnoreCommand extends AbstractCommand {
             this.helper.toggleIgnore(
                 'user',
                 id,
-                (error, ignored) => {
-                    let ign = this.helper.getIgnores(ignores => {
+                () => {
+                    this.helper.getIgnores(ignores => {
                         let ignored = ignores.find(item => item.type === 'user' && item.id === id).ignored;
-                        this.reply(`User has been ${ign ignored 'ignored' : 'unignored'}: \`${user.name}\``);
+                        this.reply(`User has been ${ignored ? 'ignored' : 'unignored'}: \`${user.name}\``);
                     });
                 }
             );
