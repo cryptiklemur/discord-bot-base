@@ -43,6 +43,34 @@ class IgnoreHelper {
         });
     }
 
+    batchIgnore(type, ids, callback) {
+
+        if (!this.brain.get) {
+            this.logger.error("Brain isn't initialized");
+            throw new Error("Brain isn't initialized");
+        }
+
+        this.getIgnores(ignored => {
+            for (let i in ids) {
+                if (!id.hasOwnProperty(index)) {
+                    continue;
+                }
+
+                let id = ids[i];
+
+                let index = ignored.findIndex(item => item.type === type && item.id === id);
+                if (index === -1) {
+                    ignored.push({type: type, id: id, ignored: true});
+                    index = ignored.length - 1;
+                } else {
+                    ignored[index].ignored = true;
+                }
+            }
+
+            this.saveIgnores(ignored, callback(ignored));
+        });
+    }
+
     unignore(type, id, callback) {
         if (!this.brain.get) {
             this.logger.error("Brain isn't initialized");
