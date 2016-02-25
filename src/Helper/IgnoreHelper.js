@@ -24,6 +24,44 @@ class IgnoreHelper {
         });
     }
 
+    ignore(type, id, callback) {
+        if (!this.brain.get) {
+            this.logger.error("Brain isn't initialized");
+            throw new Error("Brain isn't initialized");
+        }
+
+        this.getIgnores(ignored => {
+            let index = ignored.findIndex(item => item.type === type && item.id === id);
+            if (index === -1) {
+                ignored.push({type: type, id: id, ignored: true});
+                index = ignored.length - 1;
+            } else {
+                ignored[index].ignored = true;
+            }
+
+            this.saveIgnores(ignored, callback(ignored[index]));
+        });
+    }
+
+    unignore(type, id, callback) {
+        if (!this.brain.get) {
+            this.logger.error("Brain isn't initialized");
+            throw new Error("Brain isn't initialized");
+        }
+
+        this.getIgnores(ignored => {
+            let index = ignored.findIndex(item => item.type === type && item.id === id);
+            if (index === -1) {
+                ignored.push({type: type, id: id, ignored: false});
+                index = ignored.length - 1;
+            } else {
+                ignored[index].ignored = false;
+            }
+
+            this.saveIgnores(ignored, callback(ignored[index]));
+        });
+    }
+
     getIgnores(callback) {
         this.brain.get(this.keyPrefix + '.ignore', (err, results) => {
             if (err) { return this.logger.error(err); }
