@@ -52,7 +52,7 @@ class IgnoreHelper {
 
         this.getIgnores(ignored => {
             for (let i in ids) {
-                if (!id.hasOwnProperty(index)) {
+                if (!ids.hasOwnProperty(i)) {
                     continue;
                 }
 
