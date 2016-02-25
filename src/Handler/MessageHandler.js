@@ -13,23 +13,24 @@ class MessageHandler {
     }
 
     run(callback) {
+        console.log(Object.keys(this.queue).length === 0, process.env.NODE_APP_INSTANCE);
         if (Object.keys(this.queue).length === 0 || process.env.NODE_APP_INSTANCE === undefined) {
-            this.logger.debug('Starting basic message handler');
+            this.logger.info('Starting basic message handler.');
             this.client.on('message', this.listener.handleMessage.bind(this.listener));
 
             return callback();
         }
 
         this.queue.on('error', error => {
-            this.logger.error(error);
+            this.logger.error('Failed to initialize queue connection', error);
             process.exit(1);
         });
 
         this.queue.connect();
-        this.logger.debug("Waiting for queue connection");
+        this.logger.info("Using Rabbit for messages. Waiting for queue connection.");
 
         this.queue.on('ready', () => {
-            this.logger.debug("Queue connection ready");
+            this.logger.info("Queue connection ready.");
             this.createSubscriber(callback);
 
             if (process.env.NODE_APP_INSTANCE <= 1) {

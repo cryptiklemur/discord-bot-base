@@ -100,8 +100,6 @@ class Bot {
     }
 
     onReady() {
-        this.logger.info(chalk.green("Bot is connected and loaded, waiting for messages"));
-
         this.client.admin = this.client.users.get('id', this.container.getParameter('admin_id'));
 
         if (this.options.status !== undefined) {
