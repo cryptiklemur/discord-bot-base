@@ -76,8 +76,10 @@ class IgnoreCommand extends AbstractCommand {
                 'server',
                 id,
                 (ignored) => {
-                    let ign = ignored.find(item => item.type === 'server' && item.id === id).ignored;
-                    this.reply(`Server has been ${ign ? 'ignored' : 'unignored'}: \`${server.name}\``);
+                    let ign = this.helper.getIgnores(ignores => {
+                        let ignored = ignores.find(item => item.type === 'server' && item.id === id).ignored;
+                        this.reply(`Server has been ${ignored ? 'ignored' : 'unignored'}: \`${server.name}\``);
+                    });
                 }
             );
         });
@@ -90,8 +92,10 @@ class IgnoreCommand extends AbstractCommand {
                 'channel',
                 this.message.server.id + '-' + id,
                 (ignored) => {
-                    let ign = ignored.find(item => item.type === 'channel' && item.id === id).ignored;
-                    this.reply(`Channel has been ${ign ? 'ignored' : 'unignored'}: \`${channel.name}\``);
+                    let ign = this.helper.getIgnores(ignores => {
+                        let ignored = ignores.find(item => item.type === 'channel' && item.id === id).ignored;
+                        this.reply(`Channel has been ${ignored ? 'ignored' : 'unignored'}: \`${channel.name}\``);
+                    });
                 }
             );
         });
@@ -103,9 +107,11 @@ class IgnoreCommand extends AbstractCommand {
             this.helper.toggleIgnore(
                 'user',
                 id,
-                (ignored) => {
-                    let ign = ignored.find(item => item.type === 'user' && item.id === id).ignored;
-                    this.reply(`User has been ${ign ? 'ignored' : 'unignored'}: \`${user.name}\``);
+                (error, ignored) => {
+                    let ign = this.helper.getIgnores(ignores => {
+                        let ignored = ignores.find(item => item.type === 'user' && item.id === id).ignored;
+                        this.reply(`User has been ${ign ignored 'ignored' : 'unignored'}: \`${user.name}\``);
+                    });
                 }
             );
         });
