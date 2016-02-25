@@ -13,7 +13,6 @@ class MessageHandler {
     }
 
     run(callback) {
-        console.log(Object.keys(this.queue).length === 0, process.env.NODE_APP_INSTANCE);
         if (Object.keys(this.queue).length === 0 || process.env.NODE_APP_INSTANCE === undefined) {
             this.logger.info('Starting basic message handler.');
             this.client.on('message', this.listener.handleMessage.bind(this.listener));
@@ -30,10 +29,11 @@ class MessageHandler {
         this.logger.info("Using Rabbit for messages. Waiting for queue connection.");
 
         this.queue.on('ready', () => {
-            this.logger.info("Queue connection ready.");
+            this.logger.info("Queue connection ready. Creating subscriber");
             this.createSubscriber(callback);
 
             if (process.env.NODE_APP_INSTANCE <= 1) {
+                this.logger.info("First node in cluster, creating publisher");
                 this.client.on('message', message => {
                     this.logger.debug("Message received");
                     let messageId = this.messages.push(message) - 1;
@@ -47,6 +47,7 @@ class MessageHandler {
     }
 
     createSubscriber(callback) {
+        this.logger.info(this.queue.queue, this.name);
         this.queue.queue(this.name, (q) => {
             this.logger.debug(`Queue **${this.name}** is open`);
             // Catch all messages
@@ -61,6 +62,7 @@ class MessageHandler {
                 this.listener.handleMessage(message);
             });
 
+            this.logger.info("Subscriber created.");
             callback();
         });
     }
