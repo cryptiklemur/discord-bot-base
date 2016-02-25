@@ -20,7 +20,7 @@ class IgnoreHelper {
                 ignored[index].ignored = !ignored[index].ignored;
             }
 
-            this.saveIgnores(ignored, callback(ignored[index]));
+            this.saveIgnores(ignored, callback.call(ignored[index]));
         });
     }
 
@@ -39,7 +39,7 @@ class IgnoreHelper {
                 ignored[index].ignored = true;
             }
 
-            this.saveIgnores(ignored, callback(ignored[index]));
+            this.saveIgnores(ignored, callback.call(ignored[index]));
         });
     }
 
@@ -67,7 +67,7 @@ class IgnoreHelper {
                 }
             }
 
-            this.saveIgnores(ignored, callback(ignored));
+            this.saveIgnores(ignored, callback.call(ignored));
         });
     }
 
@@ -86,7 +86,7 @@ class IgnoreHelper {
                 ignored[index].ignored = false;
             }
 
-            this.saveIgnores(ignored, callback(ignored[index]));
+            this.saveIgnores(ignored, callback.call(ignored[index]));
         });
     }
 
