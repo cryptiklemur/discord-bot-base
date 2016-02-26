@@ -61,7 +61,7 @@ class AbstractCommand {
     getMatches(content, regex, callback, noPrint) {
         let matches = regex.exec(content);
 
-        this.logger.debug("Matching content against " + regex.toString(), content, matches !== null);
+        //this.logger.debug("Matching content against " + regex.toString(), content, matches !== null);
         if (matches === null) {
             return false;
         }
