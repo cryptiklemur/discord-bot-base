@@ -1,5 +1,5 @@
-const Message      = require('discord.js').Message;
-const _            = require('lodash');
+const Message = require('discord.js').Message;
+const _       = require('lodash');
 
 class MessageHandler {
     constructor(logger, client, queue, listener, name) {
@@ -35,12 +35,8 @@ class MessageHandler {
             if (process.env.NODE_APP_INSTANCE <= 1) {
                 this.logger.info("Message Handler: First node in cluster, creating publisher");
                 this.client.on('message', message => {
-                    this.logger.debug("Message received");
                     let messageId = this.messages.push(message) - 1;
-
-                    this.queue.publish(this.name, messageId, {}, () => {
-                        this.logger.debug("Message published");
-                    })
+                    this.queue.publish(this.name, messageId);
                 });
             }
         });
