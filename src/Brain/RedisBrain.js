@@ -13,7 +13,7 @@ class RedisBrain {
         let client = Redis.createClient(url);
 
         client.on("error", function(err) {
-            console.log("Error " + err);
+            console.error("Error " + err);
         });
 
         return client;

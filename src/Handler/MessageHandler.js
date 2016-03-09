@@ -1,6 +1,3 @@
-const Message = require('discord.js').Message;
-const _       = require('lodash');
-
 class MessageHandler {
     constructor(logger, client, queue, listener, name) {
         this.logger   = logger;
@@ -25,8 +22,8 @@ class MessageHandler {
             process.exit(1);
         });
 
-        this.queue.connect();
         this.logger.info("Message Handler: Using Rabbit for messages. Waiting for queue connection.");
+        this.queue.connect();
 
         this.queue.on('ready', () => {
             this.logger.info("Message Handler: Queue connection ready. Creating subscriber");

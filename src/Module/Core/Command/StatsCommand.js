@@ -1,4 +1,4 @@
-const AbstractCommand = require('./AbstractCommand');
+const AbstractCommand = require('../../../AbstractCommand');
 
 class StatsCommand extends AbstractCommand {
     static get name() { return 'stats'; }

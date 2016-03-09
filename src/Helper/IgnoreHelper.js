@@ -1,55 +1,49 @@
 class IgnoreHelper {
-    constructor(keyPrefix, brain, logger) {
-        this.keyPrefix = keyPrefix;
-        this.brain     = brain;
-        this.logger    = logger;
+    constructor(client, ignoredRepository, ignoredManager, logger) {
+        this.client            = client;
+        this.ignoredRepository = ignoredRepository;
+        this.ignoredManager    = ignoredManager;
+        this.logger            = logger;
     }
 
-    toggleIgnore(type, id, callback) {
-        if (!this.brain.get) {
-            this.logger.error("Brain isn't initialized");
-            throw new Error("Brain isn't initialized");
-        }
-
-        this.getIgnores(ignored => {
-            let index = ignored.findIndex(item => item.type === type && item.id === id);
-            if (index === -1) {
-                ignored.push({type: type, id: id, ignored: true});
-                index = ignored.length - 1;
-            } else {
-                ignored[index].ignored = !ignored[index].ignored;
-            }
-
-            this.saveIgnores(ignored, callback);
+    toggleIgnore(type, id) {
+        return new Promise((resolve, reject) => {
+            this.getIgnores(ignored => {
+                let index = ignored.findIndex(item => item.type === type && item.identifier === id);
+                console.log("Ignored Index: " + index);
+                if (index === -1) {
+                    this.ignoredManager.create({type: type, identifier: id, ignored: true})
+                        .then(resolve)
+                        .catch(reject);
+                } else {
+                    ignored[index].ignored = !ignored[index].ignored;
+                    this.ignoredManager.update(ignored[index])
+                        .then(resolve)
+                        .catch(reject);
+                }
+            });
         });
     }
 
-    ignore(type, id, callback) {
-        if (!this.brain.get) {
-            this.logger.error("Brain isn't initialized");
-            throw new Error("Brain isn't initialized");
-        }
-
-        this.getIgnores(ignored => {
-            let index = ignored.findIndex(item => item.type === type && item.id === id);
-            if (index === -1) {
-                ignored.push({type: type, id: id, ignored: true});
-                index = ignored.length - 1;
-            } else {
-                ignored[index].ignored = true;
-            }
-
-            this.saveIgnores(ignored, callback);
+    ignore(type, id) {
+        return new Promise((resolve, reject) => {
+            this.getIgnores(ignored => {
+                let index = ignored.findIndex(item => item.type === type && item.id === id);
+                if (index === -1) {
+                    this.ignoredManager.create({type: type, id: id, ignored: true})
+                        .then(resolve)
+                        .catch(reject);
+                } else {
+                    ignored[index].ignored = true;
+                    this.ignoredManager.update(ignored[index])
+                        .then(resolve)
+                        .catch(reject);
+                }
+            });
         });
     }
 
     batchIgnore(type, ids, callback) {
-
-        if (!this.brain.get) {
-            this.logger.error("Brain isn't initialized");
-            throw new Error("Brain isn't initialized");
-        }
-
         this.getIgnores(ignored => {
             for (let i in ids) {
                 if (!ids.hasOwnProperty(i)) {
@@ -57,84 +51,81 @@ class IgnoreHelper {
                 }
 
                 let id = ids[i];
-
-                let index = ignored.findIndex(item => item.type === type && item.id === id);
-                if (index === -1) {
-                    ignored.push({type: type, id: id, ignored: true});
-                    index = ignored.length - 1;
-                } else {
-                    ignored[index].ignored = true;
-                }
+                this.ignore(type, id).then(callback);
             }
-
-            this.saveIgnores(ignored, callback);
         });
     }
 
-    unignore(type, id, callback) {
-        if (!this.brain.get) {
-            this.logger.error("Brain isn't initialized");
-            throw new Error("Brain isn't initialized");
-        }
-
-        this.getIgnores(ignored => {
-            let index = ignored.findIndex(item => item.type === type && item.id === id);
-            if (index === -1) {
-                ignored.push({type: type, id: id, ignored: false});
-                index = ignored.length - 1;
-            } else {
-                ignored[index].ignored = false;
-            }
-
-            this.saveIgnores(ignored, callback);
+    unignore(type, id) {
+        return new Promise((resolve, reject) => {
+            this.getIgnores(ignored => {
+                let index = ignored.findIndex(item => item.type === type && item.id === id);
+                if (index === -1) {
+                    this.ignoredManager.create({type: type, id: id, ignored: false})
+                        .then(resolve)
+                        .catch(reject);
+                } else {
+                    ignored[index].ignored = false;
+                    this.ignoredManager.update(ignored[index])
+                        .then(resolve)
+                        .catch(reject);
+                }
+            });
         });
     }
 
     getIgnores(callback) {
-        this.brain.get(this.keyPrefix + '.ignore', (err, results) => {
-            if (err) { return this.logger.error(err); }
-            let ignored = results === null ? [] : JSON.parse(results);
-
-            return callback(ignored);
-        });
-    }
-
-    saveIgnores(ignored, callback) {
-        this.brain.set(this.keyPrefix + '.ignore', JSON.stringify(ignored), callback);
+        this.ignoredRepository.find()
+            .then(ignored => {
+                callback(ignored);
+            }).catch(this.logger.error);
     }
 
     reset() {
-        this.saveIgnores([]);
+        this.getIgnores(ignored => {
+            this.ignoredManager.delete(ignored);
+        });
     }
 
-    isNotIgnored(message, callback) {
-        let isIgnored = false;
+    isNotIgnored(message) {
+        return new Promise(resolve => {
+            if (message.author.id === this.client.admin.id) {
+                return resolve();
+            }
 
-        this.getIgnores(ignored => {
-            ignored.forEach(item => {
-                if (isIgnored || !item.ignored) {
-                    return;
-                }
+            let isIgnored = false;
+            this.getIgnores(ignored => {
+                ignored.forEach(item => {
+                    if (isIgnored || !item.ignored) {
+                        return;
+                    }
 
-                if (item.type === 'server' && item.id == message.server.id) {
-                    isIgnored = true;
-                }
-
-                if (item.type === 'channel') {
-                    let split = item.id.split('-');
-                    if (split[0] == message.server.id && split[1] == message.channel.id) {
+                    if (item.type === 'server' && item.id == message.server.id) {
                         isIgnored = true;
                     }
-                }
 
-                if (item.type === 'user' && item.id == message.author.id) {
-                    isIgnored = true;
+                    if (item.type === 'channel') {
+                        let split  = item.id.split('-'),
+                            server = message.channel.server;
+
+                        if (!server) {
+                            return;
+                        }
+
+                        if (split[0] == server.id && split[1] == message.channel.id) {
+                            isIgnored = true;
+                        }
+                    }
+
+                    if (item.type === 'user' && item.id == message.author.id) {
+                        isIgnored = true;
+                    }
+                });
+
+                if (!isIgnored) {
+                    resolve();
                 }
             });
-
-            if (!isIgnored) {
-                callback();
-            }
         });
     }
 }

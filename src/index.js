@@ -1,6 +1,6 @@
 'use strict';
 
-JSON.unflatten = function(data) {
+JSON.unflatten = function (data) {
     "use strict";
     if (Object(data) !== data || Array.isArray(data)) {
         return data;
@@ -20,7 +20,7 @@ JSON.unflatten = function(data) {
     return resultholder[""] || resultholder;
 };
 
-JSON.flatten = function(data) {
+JSON.flatten = function (data) {
     var result = {};
 
     function recurse(cur, prop) {
@@ -51,5 +51,6 @@ JSON.flatten = function(data) {
 
 module.exports = {
     Bot:             require('./Bot'),
-    AbstractCommand: require('./Command/AbstractCommand')
+    AbstractCommand: require('./AbstractCommand'),
+    AbstractModule:  require('./AbstractModule')
 };
