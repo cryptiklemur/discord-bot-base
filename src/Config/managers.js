@@ -4,6 +4,6 @@ const ModuleManager       = require('../Manager/ModuleManager'),
 
 module.exports = {
     "manager.module":        {module: ModuleManager, args: ['@client']},
-    "manager.model.server":  {module: ServerModelManager, args: ["%storage%", '@manager.module']},
-    "manager.model.ignored": {module: IgnoredModelManager, args: ["%storage%"]}
+    "manager.model.server":  {module: ServerModelManager, args: ['%storage%', '@manager.module', '%prefix%']},
+    "manager.model.ignored": {module: IgnoredModelManager, args: ['%storage%']}
 };

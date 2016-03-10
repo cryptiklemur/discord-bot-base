@@ -3,9 +3,10 @@ const MongoServer = require('../../Model/Mongo/Server'),
       MysqlModule = require('../../Model/Mysql/Module');
 
 class ServerModelManager {
-    constructor(storage, moduleManager) {
+    constructor(storage, moduleManager, prefix) {
         this.storage       = storage;
         this.moduleManager = moduleManager;
+        this.prefix        = prefix;
     }
 
     create(properties) {
@@ -21,7 +22,7 @@ class ServerModelManager {
                     }
 
                     let module = modules[index];
-                    server.modules.push({name: module.name, enabled: module.isDefaultEnabled()});
+                    server.modules.push({name: module.name, enabled: module.isDefaultEnabled(), prefix: this.prefix});
                 }
 
                 return server.save(error => {
@@ -53,7 +54,9 @@ class ServerModelManager {
                         }
 
                         let module = modules[index];
-                        server.modules.push(new MysqlModule({name: module.name, enabled: module.isDefaultEnabled()}));
+                        server.modules.push(new MysqlModule({
+                            name: module.name, enabled: module.isDefaultEnabled()
+                        }));
                     }
 
                     server.save(error => {
