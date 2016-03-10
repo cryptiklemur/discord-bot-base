@@ -3,7 +3,7 @@ const _ = require('lodash');
 class AbstractModule {
     get name() { return this._name; }
 
-    set name() { return this._name; }
+    set name(value) { return this._name = value; }
 
     get commandsDir() {
         throw new Error("Must extend get commandsDir");
