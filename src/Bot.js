@@ -15,7 +15,8 @@ class Bot {
 
         let resolver = this.buildResolver();
         resolver.resolve(options)
-            .then(this.buildContainer.bind(this));
+            .then(this.buildContainer.bind(this))
+            .catch(error => console.error(error.stack));
     }
 
     buildResolver() {

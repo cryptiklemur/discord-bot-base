@@ -76,7 +76,8 @@ class IgnoreCommand extends AbstractCommand {
                 .then(ignored => {
                         this.reply(`Server has been ${ignored.ignored ? 'ignored' : 'unignored'}: \`${server.name}\``);
                     }
-                );
+                )
+                .catch(this.logger.error);
         });
 
         this.responds(/^ignore <#(\d+)>$/, matches => {
@@ -87,7 +88,8 @@ class IgnoreCommand extends AbstractCommand {
                 .then(ignored => {
                         this.reply(`Channel has been ${ignored.ignored ? 'ignored' : 'unignored'}: \`${channel.name}\``);
                     }
-                );
+                )
+                .catch(this.logger.error);
         });
 
         this.responds(/^ignore <@(\d+)>$/, matches => {
@@ -99,7 +101,8 @@ class IgnoreCommand extends AbstractCommand {
                 .then(ignored => {
                         this.reply(`User has been ${ignored.ignored ? 'ignored' : 'unignored'}: \`${user.name}\``);
                     }
-                );
+                )
+                .catch(this.logger.error);
         });
     }
 }

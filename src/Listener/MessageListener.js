@@ -43,7 +43,8 @@ class MessageListener {
                 .then(server => {
                     this.checkCommands(message, this.moduleManager.getCommandsForServer(server), server)
                         .catch(this.catchCommandReject);
-                });
+                })
+                .catch(this.logger.error);
         }
     }
 
@@ -62,7 +63,8 @@ class MessageListener {
 
                     return resolve(server);
                 })
-        })
+                .catch(this.logger.error);
+        });
     }
 
     checkCommands(message, commands, server) {

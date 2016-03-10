@@ -23,7 +23,8 @@ class EvalCommand extends AbstractCommand {
 
         let message;
         this.reply("Executing code.")
-            .then(m => message = m);
+            .then(m => message = m)
+            .catch(this.logger.error);
 
         setTimeout(() => {
             let response;

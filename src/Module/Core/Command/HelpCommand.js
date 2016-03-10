@@ -93,6 +93,7 @@ ${adminCommands.join("\n")}
 
                         this.displayHelp(server);
                     })
+                    .catch(this.logger.error);
             }
 
             this.displayHelp();

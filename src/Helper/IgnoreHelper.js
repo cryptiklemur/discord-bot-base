@@ -51,7 +51,7 @@ class IgnoreHelper {
                 }
 
                 let id = ids[i];
-                this.ignore(type, id).then(callback);
+                this.ignore(type, id).then(callback).catch(this.logger.error);
             }
         });
     }
