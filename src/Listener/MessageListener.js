@@ -37,18 +37,15 @@ class MessageListener {
         // If private message, check against all modules, otherwise, find modules enabled on the given server.
         if (message.channel.server === undefined) {
             this.checkCommands(message, this.moduleManager.getCommandsForServer())
-                .catch(this.catchCommandReject);
+                .catch(this.logger.error);
         } else {
             this.getServer(message)
                 .then(server => {
                     this.checkCommands(message, this.moduleManager.getCommandsForServer(server), server)
-                        .catch(this.catchCommandReject);
+                        .catch(this.logger.error);
                 })
                 .catch(this.logger.error);
         }
-    }
-
-    catchCommandReject(error) {
     }
 
     getServer(message) {

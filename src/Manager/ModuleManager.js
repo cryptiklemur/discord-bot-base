@@ -27,6 +27,10 @@ class ModuleManager {
         this.modules.push(cls);
     }
 
+    getModule(name) {
+        return this.modules.find(module => module.name = name);
+    }
+
     getCommandsForServer(server) {
         let commands = [];
         this.modules.forEach(module => {
@@ -34,7 +38,8 @@ class ModuleManager {
                 return commands = commands.concat(module.getCommands());
             }
 
-            if (server.findModule(module.name).enabled) {
+            let serverModule = server.findModule(module.name);
+            if (serverModule && serverModule.enabled) {
                 return commands = commands.concat(module.getCommands());
             }
         });

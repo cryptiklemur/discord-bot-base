@@ -1,4 +1,5 @@
 const AbstractCommand = require('../../../AbstractCommand');
+
 class RestartCommand extends AbstractCommand {
     static get name() { return 'restart'; }
 

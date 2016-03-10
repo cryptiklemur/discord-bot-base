@@ -41,26 +41,45 @@ Example:
                 return this.reply("The core module is not toggleable.");
             }
 
-            Server.findOne({identifier: this.message.server.id}, (error, server) => {
-                if (error || !server) {
+            Server.findOne({identifier: this.server.id}, (error, server) => {
+                if (error) {
                     this.reply("There was an error toggling that module. Try again later.");
 
-                    return this.logger.error(!server ? ('Server doesn\'t exist: ' + this.message.server.id) : error);
+                    return this.logger.error(error);
                 }
 
-                server.findModule(matches[2]).enabled = matches[1] == 'enable';
-                server.save(error => {
-                    if (error || !server) {
-                        this.reply("There was an error toggling that module. Try again later.");
+                if (!server) {
+                    return this.container.get('module.model.server').createFromClientServer(this.server)
+                        .then(server => {
+                            this.toggleModule(server, matches[2], matches[1] === 'enable');
+                        })
+                        .catch(this.logger.error)
+                }
 
-                        return this.logger.error(error);
-                    }
-
-                    this.reply("Module is now enabled", 0, 3000);
-                    this.client.deleteMessage(this.message.message, {wait: 3000});
-                })
-            })
+                this.toggleModule(server, matches[2], matches[1] === 'eable');
+            });
         });
+    }
+
+    toggleModule(server, moduleName, enabled) {
+        let serverModule = server.findModule(moduleName);
+        if (!serverModule) {
+            let module = this.container.get('manager.module').getModule(moduleName);
+            server.modules.push({name: module.name, enabled: enabled});
+
+            return this.toggleModule(server, moduleName, enabled);
+        }
+
+        this.container.get('module.model.server').update(server)
+            .then(server => {
+                this.reply("Module is now enabled on " + server.name, 0, 3000);
+                this.client.deleteMessage(this.message.message, {wait: 3000});
+            })
+            .catch(error => {
+                this.reply("There was an error toggling that module. Try again later.");
+
+                return this.logger.error(error);
+            })
     }
 }
 

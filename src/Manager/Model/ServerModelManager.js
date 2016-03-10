@@ -10,6 +10,10 @@ class ServerModelManager {
     }
 
     create(properties) {
+        if (!properties.prefix) {
+            properties.prefix = this.prefix;
+        }
+
         let modules = this.moduleManager.getModules();
 
         return new Promise((resolve, reject) => {
@@ -22,7 +26,7 @@ class ServerModelManager {
                     }
 
                     let module = modules[index];
-                    server.modules.push({name: module.name, enabled: module.isDefaultEnabled(), prefix: this.prefix});
+                    server.modules.push({name: module.name, enabled: module.isDefaultEnabled()});
                 }
 
                 return server.save(error => {
@@ -74,7 +78,8 @@ class ServerModelManager {
     createFromClientServer(server) {
         return this.create({
             identifier: server.id,
-            owner:      server.owner.id
+            owner:      server.owner.id,
+            prefix:     this.prefix
         });
     }
 
