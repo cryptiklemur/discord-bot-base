@@ -1,9 +1,9 @@
 const _ = require('lodash');
 
 class AbstractModule {
-    get name() {
-        return this.constructor.name.replace('Module', '').toLowerCase();
-    }
+    get name() { return this._name; }
+
+    set name() { return this._name; }
 
     get commandsDir() {
         throw new Error("Must extend get commandsDir");

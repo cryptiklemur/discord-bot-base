@@ -15,6 +15,11 @@ class ModuleManager {
         }
 
         let cls = new module();
+
+        if (!cls.name) {
+            cls.name = cls.constructor.name.replace('Module', '').toLowerCase();
+        }
+
         if (this.modules.find(m => m.name === cls.name)) {
             throw new Error("A module with that name already exists.");
         }
