@@ -146,7 +146,7 @@ class AbstractCommand {
         if (message.length > 2000) {
             let chunk = this.chunkString(message, 2000);
             message = chunk.shift();
-            messageRemainder.join("");
+            messageRemainder = message.join("");
         }
 
         return new Promise((resolve, reject) => {
