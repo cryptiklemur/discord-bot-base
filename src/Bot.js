@@ -38,8 +38,7 @@ class Bot {
                 'name',
                 'version',
                 'author',
-                'email',
-                'password',
+                'token',
                 'admin_id',
                 'prefix',
                 'modules'
@@ -51,8 +50,7 @@ class Bot {
             .setAllowedTypes('prefix', 'string')
             .setAllowedTypes('modules', 'array')
             .setAllowedTypes('status', 'string')
-            .setAllowedTypes('email', 'string')
-            .setAllowedTypes('password', 'string')
+            .setAllowedTypes('token', 'string')
             .setAllowedTypes('admin_id', 'string')
             .setAllowedTypes('log_dir', 'string')
             .setAllowedTypes('queue', 'object')

@@ -6,10 +6,7 @@ module.exports = (Bot) => {
         prefix:      Bot.options.prefix,
         name:        Bot.options.name,
         storage:     Bot.options.storage,
-        login:       {
-            "email":    Bot.options.email,
-            "password": Bot.options.password
-        },
+        token:       Bot.options.token,
         status:      Bot.options.status,
         admin_id:    Bot.options.admin_id,
         commands:    Bot.options.commands,
