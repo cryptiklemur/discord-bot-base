@@ -173,7 +173,7 @@ class AbstractCommand {
 
                 if (messageRemainder) {
                     return this.sendMessage(location, messageRemainder, delay, deleteDelay).then(m => {
-                        return resolve(Array,isArray(m) ? m.concat(message) : [message]);
+                        return resolve(Array.isArray(m) ? m.concat(message) : [message]);
                     }).catch(reject);
                 }
 
