@@ -18,7 +18,7 @@ class AbstractModule {
     getCommands() {
         if (!this.commands) {
             this.commands = _.map(require('require-all')(this.commandsDir), value => {
-                value.module = this.name;
+                value.constructor.module = this.name;
 
                 return value;
             });

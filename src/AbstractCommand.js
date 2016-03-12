@@ -1,18 +1,17 @@
-const chalk      = require('chalk'),
-      _          = require('lodash'),
-      moment     = require('moment'),
-      prettyjson = require('prettyjson');
-
-const MAX_MESSAGE_LENGTH = 2000,
+const chalk              = require('chalk'),
+      _                  = require('lodash'),
+      moment             = require('moment'),
+      prettyjson         = require('prettyjson'),
+      MAX_MESSAGE_LENGTH = 2000,
       MAX_MESSAGE_COUNT  = 10;
 
 class AbstractCommand {
     static get name() {
-        throw Error("Commands must override get name()");
+        throw new Error("Commands must override get name()");
     }
 
     static get description() {
-        throw Error("Commands must override get description()");
+        throw new Error("Commands must override get description()");
     }
 
     static get adminCommand() {
@@ -148,8 +147,8 @@ class AbstractCommand {
 
         let messageRemainder = '';
         if (message.length > 2000) {
-            let chunk = this.chunkString(message, 2000);
-            message = chunk.shift();
+            let chunk        = this.chunkString(message, 2000);
+            message          = chunk.shift();
             messageRemainder = chunk.join("");
         }
 
