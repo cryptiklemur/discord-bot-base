@@ -74,18 +74,15 @@ class MessageListener {
                 let cls     = commands[index],
                     command = new cls(this.container, message, server);
 
-                if (typeof command.setCommands === 'function') {
-                    command.setCommands(this.commands);
-                }
-
                 try {
                     command.handle();
-                    resolve();
                 } catch (error) {
                     this.logger.error(error.stack);
                     reject(error);
                 }
             }
+
+            resolve();
         });
     }
 }

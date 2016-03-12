@@ -1,9 +1,13 @@
 const AbstractCommand = require('../../../AbstractCommand');
 
 class StatsCommand extends AbstractCommand {
-    static get name() { return 'stats'; }
+    static get name() {
+        return 'stats';
+    }
 
-    static get description() { return "Shows the bot stats"; }
+    static get description() {
+        return "Shows the bot stats";
+    }
 
     handle() {
         this.responds(/^stats$/g, () => {
@@ -19,8 +23,8 @@ class StatsCommand extends AbstractCommand {
 
             if (!this.isPm()) {
                 channels = this.message.server.channels.length,
-                    users    = this.message.server.members.length,
-                    online   = this.message.server.members.filter(u => u.status != "offline").length;
+                    users = this.message.server.members.length,
+                    online = this.message.server.members.filter(u => u.status != "offline").length;
 
                 this.sendMessage(
                     this.message.channel,

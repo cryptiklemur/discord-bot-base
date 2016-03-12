@@ -44,7 +44,7 @@ class ModuleManager {
             }
         });
 
-        return _.orderBy(commands, ['adminCommand', 'module', 'name'], ['asc', 'asc', 'asc']);
+        return commands;
     }
 
     getModules() {

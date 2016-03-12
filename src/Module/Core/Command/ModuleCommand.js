@@ -24,7 +24,7 @@ Example:
     }
 
     handle() {
-        if (!this.isOwner() && !this.isAdmin()) {
+        if (!this.isOwnerOrAdmin()) {
             return false;
         }
 
@@ -33,7 +33,7 @@ Example:
         });
 
         this.responds(/^module (disable|enable) ([A-Za-z0-9-_\s]+)$/, (matches) => {
-            if (this.isAdmin() || this.isOwner() || this.isPm()) {
+            if (!this.isAdminOrOwner() || this.isPm()) {
                 return false;
             }
 

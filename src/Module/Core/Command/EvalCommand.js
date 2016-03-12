@@ -17,7 +17,7 @@ class EvalCommand extends AbstractCommand {
     }
 
     evalCode(code) {
-        if (this.client.admin.id !== this.message.author.id) {
+        if (!this.isAdmin()) {
             return false;
         }
 

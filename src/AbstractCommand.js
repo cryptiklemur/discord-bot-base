@@ -124,6 +124,10 @@ class AbstractCommand {
         return this.author.id === this.server.owner.id;
     }
 
+    isAdminOrOwner(pm) {
+        return this.isAdmin() || this.isOwner(pm);
+    }
+
     reply(content, delay, deleteDelay, mention) {
         if (mention) {
             content = this.author.mention() + ', ' + content;

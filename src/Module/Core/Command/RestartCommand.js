@@ -1,11 +1,17 @@
 const AbstractCommand = require('../../../AbstractCommand');
 
 class RestartCommand extends AbstractCommand {
-    static get name() { return 'restart'; }
+    static get name() {
+        return 'restart';
+    }
 
-    static get description() { return "Restarts the bot"; }
+    static get description() {
+        return "Restarts the bot";
+    }
 
-    static get adminCommand() { return true; }
+    static get adminCommand() {
+        return true;
+    }
 
     handle() {
         this.responds(/^(restart)$/gi, () => {
