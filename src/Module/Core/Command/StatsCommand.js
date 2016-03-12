@@ -17,7 +17,7 @@ class StatsCommand extends AbstractCommand {
                 `Currently joined to: ${servers} servers with ${online}/${users} members and ${channels} channels.`
             );
 
-            if (!this.message.isPm()) {
+            if (!this.isPm()) {
                 channels = this.message.server.channels.length,
                     users    = this.message.server.members.length,
                     online   = this.message.server.members.filter(u => u.status != "offline").length;
