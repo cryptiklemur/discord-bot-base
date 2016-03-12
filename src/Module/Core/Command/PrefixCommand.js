@@ -14,7 +14,7 @@ class PrefixCommand extends AbstractCommand {
     }
 
     handle() {
-        if (!this.isOwnerOrAdmin()) {
+        if (!this.isAdminOrOwner()) {
             return false;
         }
 

@@ -24,7 +24,7 @@ Example:
     }
 
     handle() {
-        if (!this.isOwnerOrAdmin()) {
+        if (!this.isAdminOrOwner()) {
             return false;
         }
 
