@@ -15,70 +15,73 @@ class HelpCommand extends AbstractCommand {
     }
 
     displayHelp(server) {
-        let moduleManager  = this.container.get('manager.module'),
-            commandList    = moduleManager.getCommandsForServer(server),
-            longestCommand = Math.max(...commandList.map(command => command.name.length)),
-            longestModule  = Math.max(...commandList.map(command => command.module.length));
+        let moduleManager = this.container.get('manager.module'),
+            commandList   = moduleManager.getCommandsForServer(server);
 
-        longestCommand = longestCommand > 7 ? longestCommand : 7;
-        longestModule  = longestModule > 6 ? longestModule : 6;
+        let message = "Hello! Below you will find a list of my modules and their commands.";
+
+        if (!this.isPm()) {
+            let prefix = this.prefix;
+            if (prefix === '`') {
+                prefix = ' `\u200B';
+            }
+
+            message += `\nAny of these commands have to be prefix with either \`${prefix}\`, or ${this.client.user.mention()}`;
+        }
+
+        this.reply(message)
+            .then(() => {
+                let modules = moduleManager.getModules();
+
+                for (let index in modules) {
+                    if (modules.hasOwnProperty(index)) {
+                        setTimeout(() => this.displayModuleHelp(modules[index], server), 50 * index);
+                    }
+                }
+            })
+            .catch(this.logger.error);
+    }
+
+    displayModuleHelp(module, server) {
+        let commandList = [];
+
+        if (!server) {
+            commandList = module.getCommands();
+        } else {
+            let serverModule = server.findModule(module.name);
+            if (serverModule && serverModule.enabled) {
+                commandList = module.getCommands();
+            }
+        }
+
+        commandList = _.orderBy(commandList, ['adminCommand', 'module', 'name'], ['asc', 'asc', 'asc']);
+
+        let longestCommand = Math.max(...commandList.map(command => command.name.length));
+        longestCommand     = longestCommand > 7 ? longestCommand : 7;
 
         let commands = commandList.map((command) => {
                 if (command.noHelp) {
                     return null;
                 }
 
-                if (command.adminCommand) {
+                if (command.adminCommand && !(this.isAdmin() || this.isOwner())) {
                     return null;
                 }
 
-                return `${_.padEnd(command.name, longestCommand)} - ${_.pad(command.module, longestModule)} - ${command.description}${command.adminCommand ? ' - Admin' : ''}`;
+                return `${_.padEnd(command.name, longestCommand)}${command.adminCommand ? ' - Admin' : ''} - ${command.description}`;
             })
             .filter(line => line !== null);
 
-        let prefix = this.prefix;
-        if (prefix === '`') {
-            prefix = ' `\u200B';
-        }
 
-        let message = "Hello! Below you will find a list of my commands.";
-
-        if (!this.isPm()) {
-            message += `\nAny of these commands have to be prefix with either \`${prefix}\`, or ${this.client.user.mention()}`;
-        }
-
-        message += `
+        let message = `
+${_.capitalize(module.name)} Module
 
 \`\`\`
-${_.padEnd('Command', longestCommand)} - ${_.pad('Module', longestModule)} - Description\n
+${_.padEnd('Command', longestCommand)} - Description\n
 ${commands.join("\n")}
 \`\`\``;
 
-        if (this.isOwner() || this.isAdmin()) {
-            let adminCommands = commandList.map((command) => {
-                    if (command.noHelp) {
-                        return null;
-                    }
-
-                    if (!command.adminCommand) {
-                        return null;
-                    }
-
-                    return `${_.padEnd(command.name, longestCommand)} - ${_.pad(command.module, longestModule)} - ${command.description}${command.adminCommand ? ' - Admin' : ''}`;
-                })
-                .filter(line => line !== null);
-
-            message += `
-
-Admin Commands:
-
-\`\`\`
-${_.padEnd('Command', longestCommand)} - ${_.pad('Module', longestModule)} - Description\n
-${adminCommands.join("\n")}
-\`\`\``
-        }
-
-        this.reply(message);
+        this.reply(message).catch(this.logger.error);
     }
 
     handle() {

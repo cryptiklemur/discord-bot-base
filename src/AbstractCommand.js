@@ -137,7 +137,7 @@ class AbstractCommand {
             return this.logger.error("Message is too long. Will spam API.");
         }
 
-            delay = delay === undefined ? 0 : delay;
+        delay = delay === undefined ? 0 : delay;
         if (delay) {
             return setTimeout(() => this.sendMessage(location, message, 0, deleteDelay), delay);
         }
@@ -182,8 +182,15 @@ class AbstractCommand {
         });
     }
 
-    chunkString(str, length) {
-        return str.match(new RegExp('.{1,' + length + '}', 'g'));
+    chunkString(str, size) {
+        var numChunks = Math.ceil(str.length / size),
+            chunks    = new Array(numChunks);
+
+        for (var i = 0, o = 0; i < numChunks; ++i, o += size) {
+            chunks[i] = str.substr(o, size);
+        }
+
+        return chunks;
     }
 
     handle() {
