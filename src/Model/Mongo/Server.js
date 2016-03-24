@@ -19,5 +19,5 @@ server.methods.getEnabledModules = function () {
     return this.modules.filter(module => module.enabled);
 };
 
-module.exports = mongoose.model('Server', server, 'servers');
+module.exports = mongoose.model('BaseServer', server, 'base_servers');
 

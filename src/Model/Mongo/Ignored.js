@@ -10,4 +10,4 @@ var ignored = new Schema({
 
 ignored.index({type: 1, identifier: 1}, {unique: true});
 
-module.exports = mongoose.model('Ignored', ignored, 'ignored');
+module.exports = mongoose.model('BaseIgnored', ignored, 'base_ignored');

@@ -64,15 +64,17 @@ class Loader extends EventEmitter {
 
     loadDiscord() {
         let logger = this.container.get('logger'),
-            token  = this.container.getParameter('token'),
-            client = this.container.get('client');
+            data   = this.container.getParameter('login'),
+            client = this.container.get('client'),
+            login;
 
 
-        client.loginWithToken(token)
-            .catch(error => {
-                logger.error("There was an error logging in: \n\n\t" + error + "\n");
-                process.exit(1);
-            });
+        login = data.token ? client.loginWithToken(data.token) : client.login(data.email, data.password);
+
+        login.catch(error => {
+            logger.error("There was an error logging in: \n\n\t" + error + "\n");
+            process.exit(1);
+        });
 
         client.on('ready', () => {
             this.setLoaded('discord');

@@ -12,11 +12,12 @@ class Bot {
             console.error("Possibly Unhandled Rejection at: Promise ", p, " reason: ", reason);
         });
 
+        console.log("test");
 
         let resolver = this.buildResolver();
         resolver.resolve(options)
             .then(this.buildContainer.bind(this))
-            .catch(error => console.error(error.stack));
+            .catch(error => console.error(error, error.stack));
     }
 
     buildResolver() {
@@ -33,12 +34,11 @@ class Bot {
                     return {}
                 }
             })
-            .setDefined(['status', 'queue', 'redis_url', 'mongo_url', 'log_dir'])
+            .setDefined(['status', 'queue', 'redis_url', 'mongo_url', 'log_dir', 'token', 'email', 'password'])
             .setRequired([
                 'name',
                 'version',
                 'author',
-                'token',
                 'admin_id',
                 'prefix',
                 'modules'
@@ -62,6 +62,9 @@ class Bot {
     }
 
     buildContainer(options) {
+        if (!options.token && !options.email) {
+            throw new Error("Either a token or an email/password is required");
+        }
         this.options = options;
 
         let containerAndLoader = require('./Config/Container')(this),
