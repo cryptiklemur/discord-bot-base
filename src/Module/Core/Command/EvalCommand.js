@@ -11,7 +11,8 @@ class EvalCommand extends AbstractCommand {
         this.responds(/^eval(?:\s+)```[a-z]*\n([\s\S]*)?\n```/, (matches) => {
             this.evalCode(matches[1]);
         });
-        this.responds(/^eval(?:\s+)`?([\s\S]*)?`?/, (matches) => {
+
+        this.responds(/^eval(?:\s+)`?([^`]*)?`?/, (matches) => {
             this.evalCode(matches[1]);
         });
     }
