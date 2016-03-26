@@ -2,8 +2,9 @@ const MongoIgnored = require('../../Model/Mongo/Ignored'),
       MysqlIgnored = require('../../Model/Mongo/Ignored');
 
 class IgnoredModelManager {
-    constructor(storage) {
-        this.storage = storage;
+    constructor(storage, repository) {
+        this.storage    = storage;
+        this.repository = repository;
     }
 
     create(properties) {
