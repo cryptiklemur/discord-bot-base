@@ -11,7 +11,7 @@ class IgnoreHelper {
             this.ignoredRepository.findOne({type: type, identifier: id})
                 .then(ignored => {
                     if (!ignored) {
-                        return this.ignoredManager.create({type: type, id: id, ignored: true})
+                        return this.ignoredManager.create({type: type, identifier: id, ignored: true})
                             .then(resolve)
                             .catch(reject);
                     }
@@ -30,7 +30,7 @@ class IgnoreHelper {
                 .catch(this.logger.error)
                 .then(ignored => {
                     if (!ignored) {
-                        return this.ignoredManager.create({type: type, id: id, ignored: true})
+                        return this.ignoredManager.create({type: type, identifier: id, ignored: true})
                             .then(resolve)
                             .catch(reject);
                     }
@@ -49,7 +49,7 @@ class IgnoreHelper {
                 .catch(this.logger.error)
                 .then(ignored => {
                     if (!ignored) {
-                        return this.ignoredManager.create({type: type, id: id, ignored: false})
+                        return this.ignoredManager.create({type: type, identifier: id, ignored: false})
                             .then(resolve)
                             .catch(reject);
                     }
