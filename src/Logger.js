@@ -6,7 +6,7 @@ module.exports = function (debug, log_dir, name) {
             prettyPrint:      true,
             colorize:         true,
             silent:           false,
-            timestamp:        debug,
+            timestamp:        true,
             handleExceptions: true
         })
     ];
