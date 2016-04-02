@@ -8,11 +8,9 @@ class Bot {
         this.env   = env;
         this.debug = debug;
 
-        process.on("unhandledRejection", (reason, p) => {
-            console.error("Possibly Unhandled Rejection at: Promise ", p, " reason: ", reason);
+        process.on('unhandledRejection', function onError(err) {
+            throw err;
         });
-
-        console.log("test");
 
         let resolver = this.buildResolver();
         resolver.resolve(options)
