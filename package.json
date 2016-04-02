@@ -1,6 +1,6 @@
 {
   "name": "discord-bot-base",
-  "version": "5.0.11",
+  "version": "5.0.12",
   "description": "Javascript bot base for Discord",
   "main": "src/index.js",
   "scripts": {
