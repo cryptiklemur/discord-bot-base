@@ -96,12 +96,12 @@ class IgnoreHelper {
                             return;
                         }
 
-                        if (item.type === 'server' && item.id == message.channel.server.id) {
+                        if (item.type === 'server' && item.identifier == message.channel.server.id) {
                             isIgnored = true;
                         }
 
                         if (item.type === 'channel') {
-                            let split  = item.id.split('-'),
+                            let split  = item.identifier.split('-'),
                                 server = message.channel.server;
 
                             if (!server) {
@@ -113,7 +113,7 @@ class IgnoreHelper {
                             }
                         }
 
-                        if (item.type === 'user' && item.id == message.author.id) {
+                        if (item.type === 'user' && item.identifier == message.author.id) {
                             isIgnored = true;
                         }
                     });
