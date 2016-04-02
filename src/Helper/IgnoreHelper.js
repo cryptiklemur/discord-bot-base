@@ -96,7 +96,7 @@ class IgnoreHelper {
                             return;
                         }
 
-                        if (item.type === 'server' && item.identifier == message.channel.server.id) {
+                        if (item.type === 'server' && message.channel.server && item.identifier == message.channel.server.id) {
                             isIgnored = true;
                         }
 
