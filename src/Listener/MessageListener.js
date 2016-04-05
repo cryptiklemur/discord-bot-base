@@ -27,7 +27,6 @@ class MessageListener {
             return false;
         }
 
-        this.logger.debug("Checking to make sure user is not ignored");
         this.container.get('helper.ignore').isNotIgnored(message)
             .then(this.checkModules.bind(this, message))
             .catch(this.logger.error);

@@ -21,7 +21,7 @@ class Loader extends EventEmitter {
         };
 
         this.on('loaded', this.checkLoaded.bind(this));
-        this.failCheck = setTimeout(this.checkLoaded.bind(this, true), 60000);
+        this.failCheck = setTimeout(this.checkLoaded.bind(this, true), container.getParameter('loader_timeout') * 1000);
     }
 
     start() {

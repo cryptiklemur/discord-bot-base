@@ -24,11 +24,12 @@ class Bot {
 
         resolver
             .setDefaults({
-                name:      pkg.name,
-                version:   pkg.version,
-                author:    pkg.author,
-                storage:   'mongo',
-                container: () => {
+                name:          pkg.name,
+                version:       pkg.version,
+                author:        pkg.author,
+                storage:       'mongo',
+                loaderTimeout: 60,
+                container:     () => {
                     return {}
                 }
             })
@@ -66,8 +67,8 @@ class Bot {
         this.options = options;
 
         let containerAndLoader = require('./Config/Container')(this),
-            loader = containerAndLoader.loader,
-            builder = containerAndLoader.builder;
+            loader             = containerAndLoader.loader,
+            builder            = containerAndLoader.builder;
 
         loader.addJson(this.options.container(this));
 
