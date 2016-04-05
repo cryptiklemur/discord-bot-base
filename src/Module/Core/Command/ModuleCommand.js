@@ -73,7 +73,7 @@ Example:
         this.container.get('module.model.server').update(server)
             .then(server => {
                 this.reply("Module is now enabled on " + server.name, 0, 3000);
-                this.client.deleteMessage(this.message.message, {wait: 3000});
+                this.client.deleteMessage(this.message.message, {wait: 3000}).catch(this.logger.error);
             })
             .catch(error => {
                 this.reply("There was an error toggling that module. Try again later.");

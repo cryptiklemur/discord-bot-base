@@ -8,11 +8,11 @@ class EvalCommand extends AbstractCommand {
     static get adminCommand() { return true; }
 
     handle() {
-        this.responds(/^eval(?:\s+)```[a-z]*\n([\s\S]*)?\n```/, (matches) => {
+        this.responds(/^eval(?:\s+)```[a-z]*\n([\s\S]*)?\n```$/, (matches) => {
             this.evalCode(matches[1]);
         });
 
-        this.responds(/^eval(?:\s+)`?([^`]*)?`?/, (matches) => {
+        this.responds(/^eval(?:\s+)`?([^`]*)?`?$/, (matches) => {
             this.evalCode(matches[1]);
         });
     }
@@ -39,7 +39,8 @@ class EvalCommand extends AbstractCommand {
                 response = JSON.stringify(response);
             }
 
-            this.client.updateMessage(message, "```\n" + response + "\n```");
+            this.client.updateMessage(message, "```\n" + response + "\n```")
+                .catch(error => this.logger.error("Failed updating message for eval"));
         }, 500);
     }
 }

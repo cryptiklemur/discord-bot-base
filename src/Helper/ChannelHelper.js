@@ -8,34 +8,28 @@ class ChannelHelper {
 
         return new Promise((resolve, reject) => {
             if (limit < 100) {
-                return this.client.getChannelLogs(channel, limit, {}, (error, logs) => {
-                    if (error) {
-                        return reject(error);
-                    }
-
-                    resolve(logs);
-                });
+                return this.client.getChannelLogs(channel, limit)
+                    .catch(reject)
+                    .then(resolve);
             }
 
             messages = messages === undefined ? [] : messages;
-            this.client.getChannelLogs(channel, 100, {before: messages[messages.length - 1]}, (error, logs) => {
-                if (error) {
-                    return reject(error);
-                }
+            this.client.getChannelLogs(channel, 100, {before: messages[messages.length - 1]})
+                .catch(reject)
+                .resolve(logs => {
+                    messages = messages.concat(logs);
+                    if (limit !== 'all' && messages.length > limit) {
+                        messages.splice(limit);
 
-                messages = messages.concat(logs);
-                if (limit !== 'all' && messages.length > limit) {
-                    messages.splice(limit);
+                        return resolve(messages);
+                    }
 
-                    return resolve(messages);
-                }
+                    if (logs.length < 100) {
+                        return resolve(messages);
+                    }
 
-                if (logs.length < 100) {
-                    return resolve(messages);
-                }
-
-                this.getChannelLogs(channel, limit, messages).then(resolve).catch(reject);
-            })
+                    this.getChannelLogs(channel, limit, messages).then(resolve).catch(reject);
+                })
         });
     }
 }

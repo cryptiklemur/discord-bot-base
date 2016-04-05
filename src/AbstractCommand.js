@@ -145,55 +145,26 @@ class AbstractCommand {
             return setTimeout(() => this.sendMessage(location, message, 0, deleteDelay), delay);
         }
 
-        let messageRemainder = '';
         if (message.length > 2000) {
-            let chunk        = this.chunkString(message, 2000);
-            message          = chunk.shift();
-            messageRemainder = chunk.join("");
+            this.logger.error("Message too long to send: " + message);
+            throw error("Message too long");
         }
 
         return new Promise((resolve, reject) => {
-            this.client.sendMessage(location, message, (error, message) => {
-                if (error) {
-                    return reject(error);
-                }
-
-                if (deleteDelay) {
-                    this.client.deleteMessage(message, {wait: deleteDelay}, error => {
-                        if (error) {
-                            return reject(error);
-                        }
-
-                        if (!messageRemainder) {
-                            resolve();
-                        }
-                    });
-
-                    if (!messageRemainder) {
-                        return;
+            this.client.sendMessage(location.message)
+                .catch(reject)
+                .then(message => {
+                    if (deleteDelay) {
+                        return this.client.deleteMessage(message, {wait: deleteDelay})
+                            .catch(reject)
+                            .then(() => {
+                                resolve(message);
+                            });
                     }
-                }
 
-                if (messageRemainder) {
-                    return this.sendMessage(location, messageRemainder, delay, deleteDelay).then(m => {
-                        return resolve(Array.isArray(m) ? m.concat(message) : [message]);
-                    }).catch(reject);
-                }
-
-                resolve(message);
-            });
+                    resolve(message);
+                });
         });
-    }
-
-    chunkString(str, size) {
-        var numChunks = Math.ceil(str.length / size),
-            chunks    = new Array(numChunks);
-
-        for (var i = 0, o = 0; i < numChunks; ++i, o += size) {
-            chunks[i] = str.substr(o, size);
-        }
-
-        return chunks;
     }
 
     handle() {
