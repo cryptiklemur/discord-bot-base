@@ -151,7 +151,7 @@ class AbstractCommand {
         }
 
         return new Promise((resolve, reject) => {
-            this.client.sendMessage(location.message)
+            this.client.sendMessage(location, message)
                 .catch(reject)
                 .then(message => {
                     if (deleteDelay) {

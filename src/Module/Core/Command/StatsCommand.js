@@ -22,9 +22,9 @@ class StatsCommand extends AbstractCommand {
             );
 
             if (!this.isPm()) {
-                channels = this.message.server.channels.length,
-                    users = this.message.server.members.length,
-                    online = this.message.server.members.filter(u => u.status != "offline").length;
+                channels = this.server.channels.length;
+                users    = this.server.members.length;
+                online   = this.server.members.filter(u => u.status != "offline").length;
 
                 this.sendMessage(
                     this.message.channel,
