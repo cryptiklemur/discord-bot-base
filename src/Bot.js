@@ -74,6 +74,7 @@ class Bot {
 
         this.container = builder.build();
 
+        this.loader = new Loader(this.container, this);
         this.run();
     }
 
@@ -84,10 +85,9 @@ class Bot {
 
         console.log(chalk.blue(`\n\n\t${this.options.name} v${this.options.version} - by ${this.options.author}\n\n`));
 
-        let loader = new Loader(this.container, this);
-        loader.start();
+        this.loader.start();
 
-        loader.on('ready', this.onReady.bind(this));
+        this.loader.on('ready', this.onReady.bind(this));
     }
 
     onReady() {

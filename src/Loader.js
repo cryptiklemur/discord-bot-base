@@ -17,7 +17,8 @@ class Loader extends EventEmitter {
             },
             discord:   false,
             modules:   false,
-            messages:  false
+            messages:  false,
+            extra:     {}
         };
 
         this.on('loaded', this.checkLoaded.bind(this));
@@ -25,11 +26,10 @@ class Loader extends EventEmitter {
     }
 
     start() {
-        this.emit('start.pre');
+        this.emit('start.pre', this);
         this.loadStorage();
-        this.loadDiscord();
         this.loadModules();
-        this.emit('start.post');
+        this.emit('start.post', this);
     }
 
     loadStorage() {
@@ -169,8 +169,24 @@ class Loader extends EventEmitter {
             return false;
         }
 
-        return this.loaded.discord && this.loaded.modules && this.loaded.messages;
+        for (let type in this.loaded.extra) {
+            if (!this.loaded.extra.hasOwnProperty(type)) {
+                continue;
+            }
+
+            if (!this.loaded.extra[type]) {
+                return false;
+            }
+        }
+
+        if (this.loaded.modules && !this.loaded.discord) {
+            this.loadDiscord();
+        }
+
+        return this.loaded.discord && this.loaded.messages;
     }
+
+
 }
 
 module.exports = Loader;
