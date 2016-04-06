@@ -77,16 +77,22 @@ class Loader extends EventEmitter {
         });
 
         client.on('ready', () => {
-            this.setLoaded('discord');
-            client.admin = client.users.get('id', this.container.getParameter('admin_id'));
+            let interval = setInterval(() => {
+                if (client.servers.filter(server => server.name).length === client.servers.length) {
+                    clearInterval(interval);
 
-            if (this.container.getParameter('status') !== undefined) {
-                client.setStatus('online', this.container.getParameter('status'));
-            }
+                    this.setLoaded('discord');
+                    client.admin = client.users.get('id', this.container.getParameter('admin_id'));
 
-            this.container.get('handler.message').run(() => {
-                this.setLoaded('messages');
-            });
+                    if (this.container.getParameter('status') !== undefined) {
+                        client.setStatus('online', this.container.getParameter('status'));
+                    }
+
+                    this.container.get('handler.message').run(() => {
+                        this.setLoaded('messages');
+                    });
+                }
+            }, 50);
         });
 
         client.on('error', logger.error);
