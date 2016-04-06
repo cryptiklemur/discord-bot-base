@@ -131,7 +131,8 @@ class Loader extends EventEmitter {
                 },
                 Discord:  this.loaded.discord ? 'Logged In' : 'Logging In',
                 Messages: this.loaded.messages ? 'Listening' : 'Starting listener',
-                Modules:  this.loaded.modules ? this.getModuleCount() : 'Loading modules'
+                Modules:  this.loaded.modules ? this.getModuleCount() : 'Loading modules',
+                Extra:    this.loaded.extra
             }
         });
 
