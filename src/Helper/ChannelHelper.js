@@ -16,7 +16,7 @@ class ChannelHelper {
             messages = messages === undefined ? [] : messages;
             this.client.getChannelLogs(channel, 100, {before: messages[messages.length - 1]})
                 .catch(reject)
-                .resolve(logs => {
+                .then(logs => {
                     messages = messages.concat(logs);
                     if (limit !== 'all' && messages.length > limit) {
                         messages.splice(limit);
