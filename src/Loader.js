@@ -180,7 +180,8 @@ class Loader extends EventEmitter {
             }
         }
 
-        if (this.loaded.modules && !this.loaded.discord) {
+        if (this.loaded.modules && !this.loaded.discord && !this.loadingDiscord) {
+            this.loadingDiscord = true;
             this.loadDiscord();
         }
 
