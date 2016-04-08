@@ -104,6 +104,11 @@ class Loader extends EventEmitter {
         }
     }
 
+    printLoaded() {
+        let loaded = this.client.servers.length;
+        this.logger.info(`Servers Loaded: ${loaded}`);
+    }
+
     loadModules() {
         let moduleManager = this.container.get('manager.module');
 
