@@ -219,6 +219,7 @@ class Loader extends EventEmitter {
 
             nonReadyCallback();
             last = item();
+            time = 0;
         }, intervalTime)
     }
 
