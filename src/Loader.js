@@ -105,7 +105,7 @@ class Loader extends EventEmitter {
     }
 
     printLoaded() {
-        let loaded = this.client.servers.length;
+        let loaded = this.container.get('client').servers.length;
         this.logger.info(`Servers Loaded: ${loaded}`);
     }
 
