@@ -77,16 +77,24 @@ class Loader extends EventEmitter {
         });
 
         client.on('ready', () => {
-            this.setLoaded('discord');
-            client.admin = client.users.get('id', this.container.getParameter('admin_id'));
+            this.waitForNoChange(
+                () => client.servers.length,
+                () => {
+                    this.logger.info("All servers seem to be loaded.");
 
-            if (this.container.getParameter('status') !== undefined) {
-                client.setStatus('online', this.container.getParameter('status'));
-            }
+                    this.setLoaded('discord');
+                    client.admin = client.users.get('id', this.container.getParameter('admin_id'));
 
-            this.container.get('handler.message').run(() => {
-                this.setLoaded('messages');
-            });
+                    if (this.container.getParameter('status') !== undefined) {
+                        client.setStatus('online', this.container.getParameter('status'));
+                    }
+
+                    this.container.get('handler.message').run(() => {
+                        this.setLoaded('messages');
+                    });
+                },
+                this.printLoaded.bind(this)
+            );
         });
 
         client.on('error', logger.error);
@@ -186,6 +194,27 @@ class Loader extends EventEmitter {
         }
 
         return this.loaded.discord && this.loaded.messages;
+    }
+
+    waitForNoChange(item, callback, nonReadyCallback, length) {
+        length             = !length ? 10000 : length;
+        const intervalTime = 50;
+        let last           = 0, time = 0;
+        let interval       = setInterval(() => {
+            console.log(last, item());
+            if (last === item()) {
+                if (length - time <= 0) {
+                    clearInterval(interval);
+
+                    return callback();
+                }
+
+                time += intervalTime;
+            }
+
+            nonReadyCallback();
+            last = item();
+        }, intervalTime)
     }
 
 

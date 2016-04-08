@@ -11,8 +11,8 @@ class MessageListener {
 
     addModules() {
         this.modules = this.moduleManager.getModules();
-        if (this.container.hasParameter('nodules')) {
-            this.container.getParameter('nodules').forEach(module => {
+        if (this.container.hasParameter('modules')) {
+            this.container.getParameter('modules').forEach(module => {
                 this.modules.add(module);
             });
         }
