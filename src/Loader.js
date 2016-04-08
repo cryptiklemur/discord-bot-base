@@ -1,5 +1,6 @@
 const mongoose     = require("mongoose"),
       orm          = require("orm"),
+      _            = require('lodash'),
       EventEmitter = require("events").EventEmitter;
 
 class Loader extends EventEmitter {
@@ -23,6 +24,7 @@ class Loader extends EventEmitter {
 
         this.on('loaded', this.checkLoaded.bind(this));
         this.failCheck = setTimeout(this.checkLoaded.bind(this, true), container.getParameter('loader_timeout') * 1000);
+        this.printLoaded = _.throttle(this.printLoaded.bind(this), 1000);
     }
 
     start() {
@@ -206,7 +208,6 @@ class Loader extends EventEmitter {
         const intervalTime = 50;
         let last           = 0, time = 0;
         let interval       = setInterval(() => {
-            console.log(last, item());
             if (last === item()) {
                 if (length - time <= 0) {
                     clearInterval(interval);
