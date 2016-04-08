@@ -22,6 +22,7 @@
   "dependencies": {
     "amqp": "^0.2.4",
     "bluebird": "^3.1",
+    "bufferutil": "^1.2.1",
     "chalk": "^1.1",
     "crate-js": "^2.0",
     "discord.js": "hydrabolt/discord.js#indev",
@@ -38,6 +39,7 @@
     "prettyjson": "^1.1",
     "redis": "^2.4",
     "require-all": "^2.0.0",
+    "utf-8-validate": "^1.2.1",
     "winston": "^2.1"
   }
 }
