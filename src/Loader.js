@@ -204,7 +204,7 @@ class Loader extends EventEmitter {
     }
 
     waitForNoChange(item, callback, nonReadyCallback, length) {
-        length             = !length ? 10000 : length;
+        length             = !length ? 5000 : length;
         const intervalTime = 50;
         let last           = 0, time = 0;
         let interval       = setInterval(() => {
@@ -216,11 +216,12 @@ class Loader extends EventEmitter {
                 }
 
                 time += intervalTime;
+            } else {
+                time = 0;
             }
 
             nonReadyCallback();
             last = item();
-            time = 0;
         }, intervalTime)
     }
 
