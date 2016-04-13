@@ -120,6 +120,10 @@ class AbstractCommand {
             return pm;
         }
 
+        if (!this.server || !this.server.owner) {
+            return false;
+        }
+
         return this.author.id === this.server.owner.id;
     }
 
