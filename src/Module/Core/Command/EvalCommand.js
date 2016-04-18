@@ -24,24 +24,23 @@ class EvalCommand extends AbstractCommand {
 
         let message;
         this.reply("Executing code.")
-            .then(m => message = m)
+            .then(message => {
+                
+                let response;
+                try {
+                    response = eval(code);
+                } catch (error) {
+                    response = error.message;
+                }
+
+                if (Array.isArray(response) || typeof response === 'object') {
+                    response = JSON.stringify(response);
+                }
+
+                this.client.updateMessage(message, "```\n" + response + "\n```")
+                    .catch(error => this.logger.error("Failed updating message for eval"));
+            })
             .catch(this.logger.error);
-
-        setTimeout(() => {
-            let response;
-            try {
-                response = eval(code);
-            } catch (error) {
-                response = error.message;
-            }
-
-            if (Array.isArray(response) || typeof response === 'object') {
-                response = JSON.stringify(response);
-            }
-
-            this.client.updateMessage(message, "```\n" + response + "\n```")
-                .catch(error => this.logger.error("Failed updating message for eval"));
-        }, 500);
     }
 }
 
